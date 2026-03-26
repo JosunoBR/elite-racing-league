@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LanÃ§ar Resultados â€“ ERL</title>
+    <title>Lançar Resultados – ERL</title>
     <link rel="stylesheet" href="estilos.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
@@ -130,7 +130,7 @@
             <div class="collapse navbar-collapse" id="menu">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="index.html">Inicial</a></li>
-                    <li class="nav-item" data-auth-admin><a class="nav-link active" href="grid_edit.html">LanÃ§ar Resultados</a></li>
+                    <li class="nav-item" data-auth-admin><a class="nav-link active" href="grid_edit.html">Lançar Resultados</a></li>
                     <li class="nav-item" data-auth-admin><a class="nav-link" href="pilot_management.html">Gerenciar Pilotos</a></li>
                     <li class="nav-item" data-auth-admin><a class="nav-link" href="admin_users.html">Logins</a></li>
                     <li class="nav-item"><a class="nav-link" href="regulamento.html">Regulamento</a></li>
@@ -172,7 +172,7 @@
 
     <footer class="footer">
         &copy; 2026 Elite Racing League. Todos os direitos reservados.<br>
-        Desenvolvido por <strong>JosuÃ© Nogueira</strong> <a href="https://wa.me/5511951642119" target="_blank" style="text-decoration: none; margin: 0 4px;" title="WhatsApp"><i class="bi bi-whatsapp" style="color: #25D366; font-size: 1.1rem;"></i></a> <a href="mailto:josu.nogueira@gmail.com" style="text-decoration: none; margin: 0 4px;" title="E-mail"><i class="bi bi-envelope-fill" style="color: #ea4335; font-size: 1.1rem;"></i></a>
+        Desenvolvido por <strong>Josué Nogueira</strong> <a href="https://wa.me/5511951642119" target="_blank" style="text-decoration: none; margin: 0 4px;" title="WhatsApp"><i class="bi bi-whatsapp" style="color: #25D366; font-size: 1.1rem;"></i></a> <a href="mailto:josu.nogueira@gmail.com" style="text-decoration: none; margin: 0 4px;" title="E-mail"><i class="bi bi-envelope-fill" style="color: #ea4335; font-size: 1.1rem;"></i></a>
     </footer>
 
     <script src="data/pilotos.js"></script>
@@ -376,7 +376,7 @@
                 const headers = Array.from(gridElement.querySelectorAll(".stage-header")).map((h, i) => h.textContent.trim() || `Etapa ${i + 1}`);
                 const rows = Array.from(gridElement.querySelectorAll("tbody tr")).map(rowElement => {
                     const etapas = Array.from(rowElement.querySelectorAll(".stage-points")).map(cell => {
-                        // LÃª e sanitiza sem escrever de volta no DOM (evita reset de cursor)
+                        // Lê e sanitiza sem escrever de volta no DOM (evita reset de cursor)
                         return sanitizeGridNumericValue(cell.textContent);
                     });
                     return {
@@ -464,7 +464,7 @@
                         const pilotId = pilotRegistry.findIdByName(pilotName);
                         rowElement.dataset.pilotId = pilotId || '';
 
-                        // Atualiza a cÃ©lula da foto na linha atual
+                        // Atualiza a célula da foto na linha atual
                         const photoCell = rowElement.querySelector('.pilot-photo-cell');
                         if (photoCell) {
                             const pilotImage = pilotId ? pilotRegistry.getImage(pilotId) : null;
@@ -486,7 +486,7 @@
             document.getElementById("grid-container").addEventListener("blur", function (e) {
                 const target = e.target;
                 if (target.classList.contains("grid-title")) updateButtonText(target, target.dataset.gridId);
-                // Sanitiza pontos ao sair da cÃ©lula (sem interferir no cursor durante digitaÃ§Ã£o)
+                // Sanitiza pontos ao sair da célula (sem interferir no cursor durante digitação)
                 if (target.classList.contains("stage-points")) {
                     const sanitized = sanitizeGridNumericValue(target.textContent);
                     if (target.textContent !== sanitized) target.textContent = sanitized;

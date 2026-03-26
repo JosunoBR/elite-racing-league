@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -216,7 +216,7 @@
             <div class="collapse navbar-collapse" id="menu">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="index.html">Inicial</a></li>
-                    <li class="nav-item" data-auth-admin><a class="nav-link" href="grid_edit.html">LanÃ§ar Resultados</a></li>
+                    <li class="nav-item" data-auth-admin><a class="nav-link" href="grid_edit.html">Lançar Resultados</a></li>
                     <li class="nav-item" data-auth-admin><a class="nav-link active" href="pilot_management.html">Gerenciar Pilotos</a></li>
                     <li class="nav-item" data-auth-admin><a class="nav-link" href="admin_users.html">Logins</a></li>
                     <li class="nav-item"><a class="nav-link" href="regulamento.html">Regulamento</a></li>
@@ -235,7 +235,7 @@
         <h1><i class="bi bi-person-badge"></i> Gerenciar Pilotos</h1>
 
         <div class="row">
-            <!-- FormulÃ¡rio de Cadastro -->
+            <!-- Formulário de Cadastro -->
             <div class="col-lg-5">
                 <div class="card">
                     <div class="card-header">
@@ -255,12 +255,12 @@
                             <div class="mb-3">
                                 <label class="form-label">ID do Piloto *</label>
                                 <input type="text" class="form-control" id="inputPilotId" placeholder="Ex: 32" required>
-                                <small class="text-muted">ID Ãºnico para identificar o piloto</small>
+                                <small class="text-muted">ID único para identificar o piloto</small>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Nome Completo *</label>
-                                <input type="text" class="form-control" id="inputNome" placeholder="Ex: JosÃ© Silva" required>
+                                <input type="text" class="form-control" id="inputNome" placeholder="Ex: José Silva" required>
                             </div>
 
                             <div class="mb-3">
@@ -278,7 +278,7 @@
                                     <i class="bi bi-check-lg"></i> Salvar Piloto
                                 </button>
                                 <button type="button" class="btn btn-secondary" onclick="clearForm()">
-                                    <i class="bi bi-x-lg"></i> Limpar FormulÃ¡rio
+                                    <i class="bi bi-x-lg"></i> Limpar Formulário
                                 </button>
                             </div>
                         </form>
@@ -297,7 +297,7 @@
                             <input type="text" class="form-control" id="searchInput" placeholder="Buscar piloto por nome ou ID...">
                         </div>
                         <div class="pilot-list" id="pilotList">
-                            <!-- Lista de pilotos serÃ¡ renderizada aqui -->
+                            <!-- Lista de pilotos será renderizada aqui -->
                         </div>
                     </div>
                 </div>
@@ -305,12 +305,12 @@
         </div>
     </div>
 
-    <!-- Modal de ConfirmaÃ§Ã£o -->
+    <!-- Modal de Confirmação -->
     <div class="modal fade" id="confirmModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Confirmar ExclusÃ£o</h5>
+                    <h5 class="modal-title">Confirmar Exclusão</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
@@ -326,7 +326,7 @@
 
     <footer class="footer">
         &copy; 2026 Elite Racing League. Todos os direitos reservados.<br>
-        Desenvolvido por <strong>JosuÃ© Nogueira</strong> <a href="https://wa.me/5511951642119" target="_blank" style="text-decoration: none; margin: 0 4px;" title="WhatsApp"><i class="bi bi-whatsapp" style="color: #25D366; font-size: 1.1rem;"></i></a> <a href="mailto:josu.nogueira@gmail.com" style="text-decoration: none; margin: 0 4px;" title="E-mail"><i class="bi bi-envelope-fill" style="color: #ea4335; font-size: 1.1rem;"></i></a>
+        Desenvolvido por <strong>Josué Nogueira</strong> <a href="https://wa.me/5511951642119" target="_blank" style="text-decoration: none; margin: 0 4px;" title="WhatsApp"><i class="bi bi-whatsapp" style="color: #25D366; font-size: 1.1rem;"></i></a> <a href="mailto:josu.nogueira@gmail.com" style="text-decoration: none; margin: 0 4px;" title="E-mail"><i class="bi bi-envelope-fill" style="color: #ea4335; font-size: 1.1rem;"></i></a>
     </footer>
 
     <script src="data/pilotos.js"></script>
@@ -385,7 +385,7 @@
 
         async function handlePhotoSelect(file) {
             if (!file.type.startsWith("image/")) {
-                alert("Por favor, selecione uma imagem vÃ¡lida.");
+                alert("Por favor, selecione uma imagem válida.");
                 return;
             }
 
@@ -405,7 +405,7 @@
             const equipe = document.getElementById("inputEquipe").value.trim();
 
             if (!pilotId || !nome) {
-                alert("ID e Nome sÃ£o campos obrigatÃ³rios!");
+                alert("ID e Nome são campos obrigatórios!");
                 return;
             }
 
@@ -439,7 +439,7 @@
                 try {
                     updateGridWithPilot(pilotId, nome, equipe);
                 } catch (error) {
-                    console.warn("NÃ£o foi possÃ­vel sincronizar o piloto com os grids. Verifique se 'grid-storage.js' estÃ¡ incluÃ­do.", error);
+                    console.warn("Não foi possível sincronizar o piloto com os grids. Verifique se 'grid-storage.js' está incluído.", error);
                 }
 
                 clearForm();
@@ -504,7 +504,7 @@
                 placeholder.style.display = "block";
             }
 
-            // Scroll para o formulÃ¡rio
+            // Scroll para o formulário
             document.getElementById("pilotForm").scrollIntoView({ behavior: "smooth" });
         }
 
@@ -515,8 +515,8 @@
             const modalEl = document.getElementById('confirmModal');
             const modal = new bootstrap.Modal(modalEl);
 
-            modalEl.querySelector('.modal-title').textContent = 'Confirmar RemoÃ§Ã£o da Foto';
-            modalEl.querySelector('.modal-body p').innerHTML = `Deseja realmente remover a foto do piloto <strong>${pilot.nome || pilotId}</strong>? O registro do piloto serÃ¡ mantido.`;
+            modalEl.querySelector('.modal-title').textContent = 'Confirmar Remoção da Foto';
+            modalEl.querySelector('.modal-body p').innerHTML = `Deseja realmente remover a foto do piloto <strong>${pilot.nome || pilotId}</strong>? O registro do piloto será mantido.`;
             
             const confirmBtn = document.getElementById("confirmDeleteBtn");
             confirmBtn.textContent = 'Remover Foto';
@@ -605,7 +605,7 @@
         }
 
         function updateGridWithPilot(pilotId, nome, equipe) {
-            // Atualizar grids existentes se o piloto jÃ¡ estiver cadastrado
+            // Atualizar grids existentes se o piloto já estiver cadastrado
             const grids = typeof loadEditableGrids === "function" ? loadEditableGrids() : [];
             
             grids.forEach(grid => {
@@ -624,7 +624,7 @@
                 saveEditableGrids(grids);
             }
 
-            // Dispara evento de storage para atualizar outras pÃ¡ginas
+            // Dispara evento de storage para atualizar outras páginas
             window.dispatchEvent(new Event("storage"));
         }
     </script>

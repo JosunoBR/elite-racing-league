@@ -21,7 +21,7 @@
         {
           "id": 1,
           "pilotId": "1",
-          "nome": "JoÃ£o Pedro",
+          "nome": "João Pedro",
           "equipe": "redbull",
           "etapas": [
             "35",
@@ -435,7 +435,7 @@
         {
           "id": 3,
           "pilotId": "6",
-          "nome": "JoÃ£o Gabriel",
+          "nome": "João Gabriel",
           "equipe": "alpine",
           "etapas": [
             "",
@@ -1138,7 +1138,7 @@
     },
     {
       "id": "grid4",
-      "name": "Elite Rookie 4Âº DIV",
+      "name": "Elite Rookie 4º DIV",
       "headers": [
         "Etapa 1",
         "Etapa 2",
@@ -1894,7 +1894,7 @@
     },
     {
       "id": "grid6",
-      "name": "Elite Academy Class F1 25 5Âº DIV",
+      "name": "Elite Academy Class F1 25 5º DIV",
       "headers": [
         "Etapa 1",
         "Etapa 2",
@@ -1929,7 +1929,7 @@
         {
           "id": 2,
           "pilotId": "17",
-          "nome": "NatÃ£ Gabriel",
+          "nome": "Natã Gabriel",
           "equipe": "haas",
           "etapas": [
             "",
@@ -2274,7 +2274,7 @@
   "pilotRegistry": {
     "1": {
       "id": "1",
-      "nome": "JoÃ£o Pedro",
+      "nome": "João Pedro",
       "nick": "ERT",
       "equipe": "Elite Racing Team",
       "imagem": "pilotos/1.jpeg"
@@ -2309,7 +2309,7 @@
     },
     "6": {
       "id": "6",
-      "nome": "JoÃ£o Gabriel",
+      "nome": "João Gabriel",
       "nick": "ERT",
       "equipe": "Elite Racing Team",
       "imagem": "pilotos/6.jpeg"
@@ -2386,7 +2386,7 @@
     },
     "17": {
       "id": "17",
-      "nome": "NatÃ£ Gabriel",
+      "nome": "Natã Gabriel",
       "nick": "ERT",
       "equipe": "Elite Racing Team",
       "imagem": "pilotos/17.jpeg"
@@ -2470,7 +2470,7 @@
     },
     "29": {
       "id": "29",
-      "nome": "Leonardo LeÃ£o",
+      "nome": "Leonardo Leão",
       "nick": "ERT",
       "equipe": "Elite Racing Team",
       "imagem": "pilotos/29.jpeg"
@@ -2484,7 +2484,7 @@
     },
     "31": {
       "id": "31",
-      "nome": "AntÃ´nio Oliveira",
+      "nome": "Antônio Oliveira",
       "nick": "ERT",
       "equipe": "Elite Racing Team",
       "imagem": "pilotos/31.jfif"

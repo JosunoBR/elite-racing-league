@@ -1,18 +1,18 @@
-﻿// Elite Racing League - Arquivo de Dados do Campeonato
+// Elite Racing League - Arquivo de Dados do Campeonato
 //
-// InstruÃ§Ãµes para Administradores:
+// Instruções para Administradores:
 //
 // 1.  **Pilotos por Grid**: Para cada grid (ex: "elite_prime_f1_25"),
 //     adicione os objetos dos pilotos que participam daquele grid.
-//     VocÃª pode copiar os objetos dos pilotos do arquivo `data/pilotos.js`.
-//     **Certifique-se de que cada piloto tenha um `id` Ãºnico.**
+//     Você pode copiar os objetos dos pilotos do arquivo `data/pilotos.js`.
+//     **Certifique-se de que cada piloto tenha um `id` único.**
 //
-// 2.  **Resultados das Etapas**: Na seÃ§Ã£o `resultados`, cada array representa uma corrida.
+// 2.  **Resultados das Etapas**: Na seção `resultados`, cada array representa uma corrida.
 //     Dentro do array da corrida, liste os `id`s dos pilotos na ordem em que terminaram.
-//     Por exemplo: `[3, 1, 2]` significa que o piloto com id 3 chegou em 1Âº,
-//     o piloto com id 1 em 2Âº, e o piloto com id 2 em 3Âº.
+//     Por exemplo: `[3, 1, 2]` significa que o piloto com id 3 chegou em 1º,
+//     o piloto com id 1 em 2º, e o piloto com id 2 em 3º.
 //
-// 3.  **Etapas**: O nÃºmero de arrays em `resultados` corresponde ao nÃºmero de etapas concluÃ­das.
+// 3.  **Etapas**: O número de arrays em `resultados` corresponde ao número de etapas concluídas.
 //
 const dadosCampeonato = {
   "elite_prime_f1_25": {
@@ -20,7 +20,7 @@ const dadosCampeonato = {
     "pilotos": [
       {
         "id": 1,
-        "nome": "JoÃ£o Pedro",
+        "nome": "João Pedro",
         "equipe": "redbull",
         "pontos": 0,
         "foto": "pilotos/1\.jpeg"
@@ -61,7 +61,7 @@ const dadosCampeonato = {
       },
       {
         "id": 6,
-        "nome": "JoÃ£o Gabriel",
+        "nome": "João Gabriel",
         "equipe": "alpine",
         "pontos": 0,
         "foto": "pilotos/6\.jpeg"
@@ -97,7 +97,7 @@ const dadosCampeonato = {
     "resultados": []
   },
   "elite_rookie_4_div": {
-    "nome": "Elite Rookie 4Âº DIV",
+    "nome": "Elite Rookie 4º DIV",
     "pilotos": [
       {
         "id": 10,
@@ -151,7 +151,7 @@ const dadosCampeonato = {
     "resultados": []
   },
   "elite_academy_f1_25": {
-    "nome": "Elite Academy Class F1 25 5Âº DIV",
+    "nome": "Elite Academy Class F1 25 5º DIV",
     "pilotos": [
       {
         "id": 16,
@@ -162,7 +162,7 @@ const dadosCampeonato = {
       },
       {
         "id": 17,
-        "nome": "NatÃ£ Gabriel",
+        "nome": "Natã Gabriel",
         "equipe": "haas",
         "pontos": 0,
         "foto": "pilotos/17\.jpeg"

@@ -1,4 +1,4 @@
-﻿if (typeof pilotRegistry !== "undefined" && pilotRegistry.initFromPilotosJS) {
+if (typeof pilotRegistry !== "undefined" && pilotRegistry.initFromPilotosJS) {
   pilotRegistry.initFromPilotosJS();
 }
 
@@ -178,11 +178,11 @@ function renderizarTabelas() {
     gridDiv.innerHTML = `
       <!-- CARROSSEL -->
       <div class="container mt-5">
-        <h1 class="title">ðŸ Destaques de ${escapeHtml(grid.name || "Grid " + (index + 1))}</h1>
+        <h1 class="title">🏁 Destaques de ${escapeHtml(grid.name || "Grid " + (index + 1))}</h1>
         ${swiperHtml}
       </div>
 
-      <!-- TABELA DE CLASSIFICAÃ‡ÃƒO -->
+      <!-- TABELA DE CLASSIFICAÇÃO -->
       <div class="classificacao-container">
         <div class="tabela">
           <h3>${escapeHtml(grid.name || "Grid " + (index + 1))}</h3>

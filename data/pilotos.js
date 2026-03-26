@@ -1,7 +1,7 @@
-﻿const pilotos = [
+const pilotos = [
   {
     id: 1,
-    nome: "JoÃ£o Pedro",
+    nome: "João Pedro",
     nick: "ERT",
     equipe: "Elite Racing Team",
     imagem: "pilotos/1\.jpeg",
@@ -41,7 +41,7 @@
   },
   {
     id: 6,
-    nome: "JoÃ£o Gabriel",
+    nome: "João Gabriel",
     nick: "ERT",
     equipe: "Elite Racing Team",
     imagem: "pilotos/6\.jpeg",
@@ -129,7 +129,7 @@
   },
   {
     id: 17,
-    nome: "NatÃ£ Gabriel",
+    nome: "Natã Gabriel",
     nick: "ERT",
     equipe: "Elite Racing Team",
     imagem: "pilotos/17\.jpeg",
@@ -225,7 +225,7 @@
   },
   {
     id: 29,
-    nome: "Leonardo LeÃ£o",
+    nome: "Leonardo Leão",
     nick: "ERT",
     equipe: "Elite Racing Team",
     imagem: "pilotos/29\.jpeg",
@@ -243,7 +243,7 @@
 
   {
     id: 31,
-    nome: "AntÃ´nio Oliveira",
+    nome: "Antônio Oliveira",
     nick: "ERT",
     equipe: "Elite Racing Team",
     imagem: "pilotos/31\.jfif",
