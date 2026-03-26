@@ -1,0 +1,160 @@
+<!-- c:\Users\Josué\Documents\Elite Racing League\admin.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin - Lançar Resultados</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="estilos.css">
+  <style>
+    body { background: #111; color: white; padding: 20px; }
+    .container { max-width: 800px; }
+    .piloto-row { 
+      background: #222; 
+      padding: 10px; 
+      margin-bottom: 5px; 
+      border-radius: 5px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between;
+    }
+    .piloto-nome { font-weight: bold; }
+    .equipe-tag { font-size: 12px; padding: 2px 6px; border-radius: 4px; background: #333; margin-left: 10px;}
+    input[type="number"] { width: 70px; background: #333; color: white; border: 1px solid #555; text-align: center; }
+    
+    /* Cores das equipes para facilitar visualização */
+    .ferrari { border-left: 4px solid red; }
+    .mercedes { border-left: 4px solid #00d2be; }
+    .redbull { border-left: 4px solid #1e5bc6; }
+    .mclaren { border-left: 4px solid #ff8700; }
+    .alpine { border-left: 4px solid #0090ff; }
+    .astonmartin { border-left: 4px solid #006f62; }
+    .haas { border-left: 4px solid #fff; }
+    .rb { border-left: 4px solid #6692ff; }
+    .williams { border-left: 4px solid #005aff; }
+    .kicksauber { border-left: 4px solid #00e701; }
+    
+    #codigoGerado {
+        background: #000;
+        color: #00ff00;
+        font-family: monospace;
+        width: 100%;
+        height: 150px;
+        margin-top: 20px;
+        padding: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2 class="mb-4 text-primary">🏁 Lançamento de Resultados</h2>
+  
+  <ul class="nav nav-tabs mb-3" id="adminTabs">
+    <!-- Abas geradas via JS -->
+  </ul>
+
+  <div class="alert alert-info">
+    Instruções: Digite a posição de chegada (1, 2, 3...) para cada piloto que completou a corrida. 
+    Deixe em branco ou 0 se não pontuou/não participou.
+  </div>
+
+  <div id="listaPilotos">
+    <!-- Lista gerada via JS -->
+  </div>
+
+  <button class="btn btn-success mt-3 w-100 py-3" onclick="gerarCodigo()">GERAR CÓDIGO DE ATUALIZAÇÃO</button>
+
+  <h4 class="mt-4">Copie o código abaixo e cole no arquivo <code>js/db.js</code> na parte de <code>resultados</code> do grid correspondente:</h4>
+  <textarea id="codigoGerado" readonly></textarea>
+  <button class="btn btn-outline-light mt-2 btn-sm" onclick="copiarTexto()">Copiar Texto</button>
+  <a href="index.html" class="btn btn-link mt-2 text-muted">Voltar ao Site</a>
+</div>
+
+<script src="js/db.js"></script>
+<script>
+    let gridAtual = "grid1";
+
+    function carregarAbas() {
+        const tabsContainer = document.getElementById('adminTabs');
+        let html = '';
+        
+        for(let key in dadosCampeonato) {
+            const active = key === "grid1" ? "active" : "";
+            html += `
+                <li class="nav-item">
+                    <button class="nav-link ${active}" onclick="mudarGrid('${key}', this)">
+                        ${dadosCampeonato[key].nome}
+                    </button>
+                </li>
+            `;
+        }
+        tabsContainer.innerHTML = html;
+        renderizarPilotos("grid1");
+    }
+
+    function mudarGrid(key, btn) {
+        gridAtual = key;
+        document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderizarPilotos(key);
+    }
+
+    function renderizarPilotos(key) {
+        const container = document.getElementById('listaPilotos');
+        const pilotos = dadosCampeonato[key].pilotos;
+        
+        let html = '';
+        pilotos.forEach(p => {
+            html += `
+                <div class="piloto-row ${p.equipe}">
+                    <div>
+                        <span class="piloto-nome">${p.nome}</span> 
+                        <span class="equipe-tag">${p.equipe.toUpperCase()}</span>
+                        <small>#${p.numero}</small>
+                    </div>
+                    <input type="number" id="pos_${p.id}" placeholder="Pos" min="1" max="20">
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    function gerarCodigo() {
+        const pilotos = dadosCampeonato[gridAtual].pilotos;
+        let resultadoArray = [];
+
+        // Cria um array temporário com {id, posicao}
+        let temp = [];
+        pilotos.forEach(p => {
+            const input = document.getElementById(`pos_${p.id}`);
+            const pos = parseInt(input.value);
+            if (pos > 0) {
+                temp.push({ id: p.id, pos: pos });
+            }
+        });
+
+        // Ordena pela posição (1º, 2º, 3º...)
+        temp.sort((a, b) => a.pos - b.pos);
+
+        // Extrai só os IDs na ordem correta
+        const idsOrdenados = temp.map(item => item.id);
+
+        const texto = `// Cole isso dentro de "resultados: []" do ${dadosCampeonato[gridAtual].nome}\n[${idsOrdenados.join(", ")}],`;
+        
+        document.getElementById('codigoGerado').value = texto;
+    }
+
+    function copiarTexto() {
+        const copyText = document.getElementById("codigoGerado");
+        copyText.select();
+        document.execCommand("copy");
+        alert("Código copiado! Agora abra o js/db.js e cole na lista de resultados.");
+    }
+
+    // Iniciar
+    carregarAbas();
+</script>
+
+</body>
+</html>

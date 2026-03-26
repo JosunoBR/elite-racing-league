@@ -1,0 +1,254 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerenciar Logins - ERL</title>
+  <link rel="stylesheet" href="estilos.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="icon" type="image/png" href="fotosmenu/logo.png" sizes="196x196">
+  <script src="api/bootstrap.js"></script>
+  <script src="js/persistence.js"></script>
+  <script src="js/auth.js"></script>
+  <script>Auth.requireLogin('login.html?redirect=admin_users.html');</script>
+  <style>
+    body { background: linear-gradient(180deg,#111,#000); color:#fff; font-family:'Inter',Arial,sans-serif; min-height:100vh; }
+    .page-title { color:#e10600; font-size:26px; font-weight:800; letter-spacing:0.5px; }
+    .card-dark { background:#111; border:1px solid #222; border-radius:14px; }
+    .card-dark .card-header { background:#0a0a0a; border-bottom:1px solid #1d1d1d; border-radius:14px 14px 0 0; padding:16px 20px; }
+    .form-label { color:#aaa; font-size:13px; font-weight:600; }
+    .form-control, .form-select {
+      background:#1a1a1a; border:1px solid #333; color:#fff; border-radius:8px; padding:10px 14px;
+      transition:border-color .2s;
+    }
+    .form-control:focus, .form-select:focus { background:#1f1f1f; border-color:#e10600; box-shadow:0 0 0 3px rgba(225,6,0,0.18); color:#fff; outline:none; }
+    .form-control::placeholder { color:#3d3d3d; }
+    .form-select option { background:#1a1a1a; }
+    .btn-red { background:#e10600; border:none; color:#fff; font-weight:700; border-radius:8px; padding:10px 20px; cursor:pointer; transition:background .2s,transform .15s; }
+    .btn-red:hover { background:#c10500; transform:translateY(-1px); }
+    .btn-red:disabled { opacity:.5; cursor:not-allowed; transform:none; }
+    .user-row { display:flex; align-items:center; gap:14px; padding:14px 18px; border-bottom:1px solid #1d1d1d; transition:background .2s; }
+    .user-row:last-child { border-bottom:none; }
+    .user-row:hover { background:#151515; }
+    .user-avatar {
+      width:40px; height:40px; border-radius:50%; background:#1d1d1d; border:2px solid #333;
+      display:flex; align-items:center; justify-content:center; font-weight:700; font-size:15px; color:#e10600; flex-shrink:0;
+    }
+    .user-name { font-weight:700; font-size:15px; }
+    .user-role { font-size:11.5px; color:#666; }
+    .badge-root  { background:#e10600; color:#fff; border-radius:5px; font-size:10px; font-weight:700; padding:2px 8px; }
+    .badge-admin { background:#333;    color:#aaa; border-radius:5px; font-size:10px; font-weight:700; padding:2px 8px; }
+    .btn-del { background:transparent; border:1px solid #dc3545; color:#dc3545; border-radius:6px; padding:5px 10px; cursor:pointer; font-size:12px; transition:.2s; }
+    .btn-del:hover { background:#dc3545; color:#fff; }
+    .btn-pwd { background:transparent; border:1px solid #444; color:#aaa; border-radius:6px; padding:5px 10px; cursor:pointer; font-size:12px; transition:.2s; }
+    .btn-pwd:hover { background:#333; color:#fff; }
+    .alert-success { background:rgba(25,135,84,0.12); border:1px solid rgba(25,135,84,0.3); color:#5eb888; border-radius:8px; padding:10px 14px; margin-top:12px; font-size:13px; }
+    .alert-danger  { background:rgba(220,53,69,0.12);  border:1px solid rgba(220,53,69,0.3);  color:#ff6b6b;  border-radius:8px; padding:10px 14px; margin-top:12px; font-size:13px; }
+    .empty-state { text-align:center; padding:40px; color:#444; }
+    /* Modal de alterar senha */
+    .overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:900; align-items:center; justify-content:center; }
+    .overlay.show { display:flex; }
+    .modal-box { background:#131313; border:1px solid rgba(225,6,0,0.2); border-radius:16px; padding:32px 28px; width:100%; max-width:380px; box-shadow:0 20px 60px rgba(0,0,0,0.7); }
+    .modal-box h5 { color:#fff; font-weight:700; margin-bottom:20px; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="index.html">
+        <img src="fotosmenu/logo.png" class="logo">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="menu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Inicial</a></li>
+          <li class="nav-item" data-auth-admin><a class="nav-link" href="grid_edit.html">LanÃ§ar Resultados</a></li>
+          <li class="nav-item" data-auth-admin><a class="nav-link" href="pilot_management.html">Gerenciar Pilotos</a></li>
+          <li class="nav-item" data-auth-admin><a class="nav-link active" href="admin_users.html">Logins</a></li>
+          <li class="nav-item"><a class="nav-link" href="regulamento.html">Regulamento</a></li>
+          <li class="nav-item" id="btn-login-nav" style="display:none">
+            <a class="nav-link" href="login.html" style="color:#e10600;font-weight:600"><i class="bi bi-box-arrow-in-right me-1"></i>Entrar</a>
+          </li>
+          <li class="nav-item" id="btn-logout-nav" style="display:none">
+            <a class="nav-link" href="#" onclick="Auth.logout(); window.location.href='index.html';" style="color:#888;font-weight:600"><i class="bi bi-box-arrow-right me-1"></i>Sair (<span id="nav-username"></span>)</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container py-5">
+    <h1 class="page-title mb-1"><i class="bi bi-people-fill me-2"></i>Gerenciar Logins</h1>
+    <p style="color:#555;font-size:13px;margin-bottom:32px">Crie e remova usuarios com acesso ao painel administrativo.</p>
+
+    <div class="row g-4">
+      <!-- Formulario novo usuario -->
+      <div class="col-lg-5">
+        <div class="card-dark">
+          <div class="card-header">
+            <h5 class="mb-0" style="color:#fff"><i class="bi bi-person-plus-fill me-2" style="color:#e10600"></i>Novo Usuario</h5>
+          </div>
+          <div class="p-4">
+            <form id="createForm" novalidate autocomplete="off">
+              <div class="mb-3">
+                <label class="form-label">Usuario *</label>
+                <input type="text" class="form-control" id="newUser" placeholder="Ex: jose (minusculo, sem espacos)">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Senha *</label>
+                <div style="position:relative">
+                  <input type="password" class="form-control" id="newPass" placeholder="Minimo 4 caracteres">
+                  <button type="button" onclick="toggleVis('newPass','eyeNew')" style="background:none;border:none;color:#555;position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:16px;transition:color .2s" title="Mostrar">
+                    <i class="bi bi-eye" id="eyeNew"></i>
+                  </button>
+                </div>
+              </div>
+
+              <button type="submit" class="btn-red w-100" id="btnCreate">
+                <i class="bi bi-plus-lg me-1"></i>Criar Usuario
+              </button>
+              <div id="createMsg" style="display:none"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lista de usuarios -->
+      <div class="col-lg-7">
+        <div class="card-dark">
+          <div class="card-header d-flex align-items-center justify-content-between">
+            <h5 class="mb-0" style="color:#fff"><i class="bi bi-people me-2" style="color:#e10600"></i>Usuarios Cadastrados</h5>
+            <span id="userCount" style="color:#555;font-size:13px"></span>
+          </div>
+          <div id="userList">
+            <!-- preenchido por JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal alterar senha -->
+  <div class="overlay" id="pwdOverlay">
+    <div class="modal-box">
+      <h5><i class="bi bi-key-fill me-2" style="color:#e10600"></i>Alterar Senha</h5>
+      <p style="color:#666;font-size:13px">Usuario: <strong id="pwdUsername" style="color:#fff"></strong></p>
+      <div class="mb-3">
+        <label class="form-label">Nova Senha *</label>
+        <div style="position:relative">
+          <input type="password" class="form-control" id="pwdInput" placeholder="Minimo 4 caracteres">
+          <button type="button" onclick="toggleVis('pwdInput','eyePwd')" style="background:none;border:none;color:#555;position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:16px">
+            <i class="bi bi-eye" id="eyePwd"></i>
+          </button>
+        </div>
+      </div>
+      <div id="pwdMsg" style="display:none;margin-bottom:10px"></div>
+      <div class="d-flex gap-2">
+        <button class="btn-red flex-fill" onclick="savePwd()"><i class="bi bi-check-lg me-1"></i>Salvar</button>
+        <button onclick="closePwd()" style="background:#222;border:1px solid #333;color:#aaa;border-radius:8px;padding:10px 18px;cursor:pointer;font-size:14px;flex:1">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    &copy; 2026 Elite Racing League. Todos os direitos reservados.<br>
+    Desenvolvido por <strong>JosuÃ© Nogueira</strong> <a href="https://wa.me/5511951642119" target="_blank" style="text-decoration: none; margin: 0 4px;" title="WhatsApp"><i class="bi bi-whatsapp" style="color: #25D366; font-size: 1.1rem;"></i></a> <a href="mailto:josu.nogueira@gmail.com" style="text-decoration: none; margin: 0 4px;" title="E-mail"><i class="bi bi-envelope-fill" style="color: #ea4335; font-size: 1.1rem;"></i></a>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      Auth.updateNavLinks();
+      renderUsers();
+
+      document.getElementById('createForm').addEventListener('submit', function(e){
+        e.preventDefault();
+        var user = document.getElementById('newUser').value.trim().toLowerCase();
+        var pass = document.getElementById('newPass').value;
+        var res  = Auth.createUser(user, pass, 'admin');
+        var msg  = document.getElementById('createMsg');
+        msg.style.display = 'block';
+        msg.className = res.ok ? 'alert-success' : 'alert-danger';
+        msg.innerHTML = (res.ok ? '<i class="bi bi-check-circle me-1"></i>' : '<i class="bi bi-exclamation-triangle me-1"></i>') + res.msg;
+        if(res.ok){
+          document.getElementById('createForm').reset();
+          renderUsers();
+          setTimeout(function(){ msg.style.display='none'; }, 3000);
+        }
+      });
+    });
+
+    function renderUsers(){
+      var users = Auth.listUsers();
+      var list  = document.getElementById('userList');
+      document.getElementById('userCount').textContent = users.length + ' usuario(s)';
+      if(!users.length){
+        list.innerHTML = '<div class="empty-state"><i class="bi bi-people" style="font-size:40px"></i><p class="mt-3">Nenhum usuario cadastrado.</p></div>';
+        return;
+      }
+      list.innerHTML = users.map(function(u){
+        var initials = u.username.substring(0,2).toUpperCase();
+        var isMe = u.username === Auth.currentUser();
+        var badge = u.role==='root'
+          ? '<span class="badge-root">ROOT</span>'
+          : '<span class="badge-admin">ADMIN</span>';
+        var canDelete = u.role !== 'root';
+        return '<div class="user-row">' +
+          '<div class="user-avatar">' + initials + '</div>' +
+          '<div style="flex:1">' +
+            '<div class="user-name">' + u.username + (isMe ? ' <span style="color:#555;font-size:11px">(voce)</span>' : '') + '</div>' +
+            '<div class="user-role">' + badge + '</div>' +
+          '</div>' +
+          '<div class="d-flex gap-2">' +
+            '<button class="btn-pwd" onclick="openPwd(\'' + u.username + '\')" title="Alterar senha"><i class="bi bi-key"></i></button>' +
+            (canDelete
+              ? '<button class="btn-del" onclick="deleteUser(\'' + u.username + '\')" title="Remover usuario"><i class="bi bi-trash"></i></button>'
+              : '<button class="btn-del" disabled title="Root nao pode ser removido" style="opacity:.3;cursor:not-allowed"><i class="bi bi-lock"></i></button>') +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    function deleteUser(username){
+      if(!confirm('Remover o usuario "' + username + '"? Esta acao nao pode ser desfeita.')) return;
+      var res = Auth.removeUser(username);
+      if(res.ok) renderUsers();
+      else alert(res.msg);
+    }
+
+    var _pwdTarget = null;
+    function openPwd(username){
+      _pwdTarget = username;
+      document.getElementById('pwdUsername').textContent = username;
+      document.getElementById('pwdInput').value = '';
+      document.getElementById('pwdMsg').style.display = 'none';
+      document.getElementById('pwdOverlay').classList.add('show');
+      setTimeout(function(){ document.getElementById('pwdInput').focus(); }, 100);
+    }
+    function closePwd(){
+      document.getElementById('pwdOverlay').classList.remove('show');
+      _pwdTarget = null;
+    }
+    function savePwd(){
+      var newPwd = document.getElementById('pwdInput').value;
+      var msg    = document.getElementById('pwdMsg');
+      var res    = Auth.changePassword(_pwdTarget, newPwd);
+      msg.style.display = 'block';
+      msg.className = res.ok ? 'alert-success' : 'alert-danger';
+      msg.innerHTML = res.ok ? '<i class="bi bi-check-circle me-1"></i>Senha alterada com sucesso.' : '<i class="bi bi-exclamation-triangle me-1"></i>' + res.msg;
+      if(res.ok) setTimeout(closePwd, 1200);
+    }
+    function toggleVis(inputId, iconId){
+      var i = document.getElementById(inputId);
+      var ic = document.getElementById(iconId);
+      if(i.type==='password'){i.type='text';ic.className='bi bi-eye-slash';}
+      else{i.type='password';ic.className='bi bi-eye';}
+    }
+  </script>
+</body>
+</html>
+

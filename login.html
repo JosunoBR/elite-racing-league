@@ -1,0 +1,139 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Elite Racing League</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="icon" type="image/png" href="fotosmenu/logo.png" sizes="196x196">
+  <script src="api/bootstrap.js"></script>
+  <script src="js/persistence.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    // Se ja logado, vai direto para o destino
+    if (Auth.isLoggedIn()) {
+      window.location.href = (new URLSearchParams(location.search).get('redirect')) || 'grid_edit.html';
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; background: #000;
+      font-family: 'Inter', Arial, sans-serif;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .bg-anim {
+      position: fixed; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse at 20% 30%, rgba(225,6,0,0.18) 0%, transparent 60%),
+                  radial-gradient(ellipse at 80% 70%, rgba(225,6,0,0.10) 0%, transparent 55%),
+                  linear-gradient(180deg, #0a0a0a 0%, #000 100%);
+    }
+    .top-stripe { position: fixed; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg,transparent,#e10600,transparent); z-index:10; }
+    .login-card {
+      position: relative; z-index: 1;
+      background: rgba(18,18,18,0.97); border: 1px solid rgba(225,6,0,0.25);
+      border-radius: 20px; padding: 48px 44px 40px; width: 100%; max-width: 420px;
+      box-shadow: 0 0 60px rgba(225,6,0,0.12), 0 20px 60px rgba(0,0,0,0.6);
+      animation: cardIn 0.45s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    @keyframes cardIn { from{opacity:0;transform:translateY(28px) scale(0.97)} to{opacity:1;transform:translateY(0) scale(1)} }
+    .login-logo { display:block; width:76px; margin:0 auto 16px; filter:drop-shadow(0 0 14px rgba(225,6,0,0.5)); }
+    .login-title { text-align:center; color:#fff; font-size:21px; font-weight:700; margin-bottom:3px; }
+    .login-subtitle { text-align:center; color:#555; font-size:13px; margin-bottom:32px; }
+    .form-label { color:#aaa; font-size:13px; font-weight:600; margin-bottom:6px; }
+    .form-control {
+      background:#1a1a1a; border:1px solid #333; color:#fff; border-radius:10px;
+      padding:12px 16px; font-size:15px; transition:border-color .2s,box-shadow .2s;
+    }
+    .form-control:focus { background:#1f1f1f; border-color:#e10600; box-shadow:0 0 0 3px rgba(225,6,0,0.18); color:#fff; outline:none; }
+    .form-control::placeholder { color:#3d3d3d; }
+    .input-group-text { background:#1a1a1a; border:1px solid #333; color:#555; border-radius:10px 0 0 10px; border-right:none; }
+    .input-group .form-control { border-radius:0 10px 10px 0; border-left:none; }
+    .input-group:focus-within .input-group-text { border-color:#e10600; color:#e10600; }
+    .pass-wrapper { position:relative; }
+    .show-pass-btn { background:none; border:none; color:#555; position:absolute; right:12px; top:50%; transform:translateY(-50%); cursor:pointer; padding:0; font-size:16px; transition:color .2s; z-index:5; }
+    .show-pass-btn:hover { color:#e10600; }
+    .btn-login {
+      width:100%; background:linear-gradient(135deg,#e10600,#c10500); border:none; color:#fff;
+      font-weight:700; font-size:15px; padding:13px; border-radius:10px; cursor:pointer;
+      transition:transform .15s,box-shadow .2s; letter-spacing:.4px; margin-top:8px;
+    }
+    .btn-login:hover { box-shadow:0 6px 22px rgba(225,6,0,0.4); transform:translateY(-1px); }
+    .btn-login:active { transform:translateY(0); }
+    .btn-login:disabled { opacity:.55; cursor:not-allowed; transform:none; }
+    .error-msg { display:none; background:rgba(220,53,69,.10); border:1px solid rgba(220,53,69,.3); color:#ff6b6b; border-radius:8px; padding:9px 14px; font-size:13px; margin-top:12px; text-align:center; }
+    .error-msg.show { display:block; animation:shake .35s; }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-5px)} 40%,80%{transform:translateX(5px)} }
+    .back-link { display:block; text-align:center; margin-top:22px; color:#444; font-size:12.5px; text-decoration:none; transition:color .2s; }
+    .back-link:hover { color:#e10600; }
+  </style>
+</head>
+<body>
+<div class="top-stripe"></div>
+<div class="bg-anim"></div>
+<div class="login-card">
+  <img src="fotosmenu/logo.png" alt="ERL" class="login-logo">
+  <h1 class="login-title">Area Administrativa</h1>
+  <p class="login-subtitle">Elite Racing League &ndash; acesso restrito</p>
+  <form id="loginForm" autocomplete="off" novalidate>
+    <div class="mb-3">
+      <label for="fUser" class="form-label"><i class="bi bi-person-fill me-1"></i>Usuario</label>
+      <div class="input-group">
+        <span class="input-group-text"><i class="bi bi-person"></i></span>
+        <input type="text" class="form-control" id="fUser" placeholder="Digite seu usuario" autocomplete="username">
+      </div>
+    </div>
+    <div class="mb-2">
+      <label for="fPass" class="form-label"><i class="bi bi-lock-fill me-1"></i>Senha</label>
+      <div class="pass-wrapper">
+        <input type="password" class="form-control" id="fPass" placeholder="Digite sua senha" autocomplete="current-password">
+        <button type="button" class="show-pass-btn" id="togglePass" title="Mostrar/ocultar senha">
+          <i class="bi bi-eye" id="eyeIcon"></i>
+        </button>
+      </div>
+    </div>
+    <div class="error-msg" id="errMsg">
+      <i class="bi bi-exclamation-triangle-fill me-1"></i>Usuario ou senha incorretos.
+    </div>
+    <button type="submit" class="btn-login" id="btnLogin">
+      <i class="bi bi-box-arrow-in-right me-1"></i>Entrar
+    </button>
+  </form>
+  <a href="index.html" class="back-link"><i class="bi bi-arrow-left me-1"></i>Voltar ao inicio</a>
+</div>
+<script>
+  document.getElementById('togglePass').addEventListener('click', function(){
+    var i = document.getElementById('fPass');
+    var ic = document.getElementById('eyeIcon');
+    if(i.type==='password'){i.type='text';ic.className='bi bi-eye-slash';}
+    else{i.type='password';ic.className='bi bi-eye';}
+  });
+  document.getElementById('loginForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var user = document.getElementById('fUser').value.trim();
+    var pass = document.getElementById('fPass').value;
+    var err  = document.getElementById('errMsg');
+    var btn  = document.getElementById('btnLogin');
+    err.classList.remove('show');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Verificando...';
+    setTimeout(function(){
+      if(Auth.login(user, pass)){
+        btn.innerHTML = '<i class="bi bi-check-lg me-1"></i>Acesso autorizado!';
+        var dest = (new URLSearchParams(location.search).get('redirect')) || 'grid_edit.html';
+        setTimeout(function(){ window.location.href = dest; }, 600);
+      } else {
+        err.classList.add('show');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-box-arrow-in-right me-1"></i>Entrar';
+        document.getElementById('fPass').value = '';
+        document.getElementById('fPass').focus();
+      }
+    }, 450);
+  });
+</script>
+</body>
+</html>
+

@@ -1,0 +1,981 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regulamento - Elite Racing League</title>
+<link rel="stylesheet" href="estilos.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="fotosmenu/logo.png" sizes="96x96" />
+<style>
+
+* { box-sizing: border-box; }
+
+body {
+  background: linear-gradient(180deg, #0b0c14 0%, #0e1020 50%, #0b0c14 100%);
+  color: white;
+  font-family: 'Inter', Arial, sans-serif;
+  margin: 0;
+}
+
+/* â”€â”€ HERO â”€â”€ */
+.hero-regulamento {
+  position: relative;
+  width: 100%;
+  height: 55vh;
+  background-image: url("fotosmenu/regulamento logo.png");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero-regulamento::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(0,0,0,0.92) 0%,
+    rgba(0,0,0,0.6) 40%,
+    rgba(0,0,0,0.25) 70%,
+    rgba(0,0,0,0) 100%
+  );
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to left,
+    rgba(0,0,0,0.1) 0%,
+    rgba(0,0,0,0.4) 40%,
+    rgba(0,0,0,0.85) 75%,
+    rgba(0,0,0,1) 100%
+  );
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+}
+
+.hero-content .eyebrow {
+  color: #e10600;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.hero-content h1 {
+  font-size: 60px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  line-height: 1.1;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* â”€â”€ SECTION WRAPPER â”€â”€ */
+.reg-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 60px 24px 40px;
+}
+
+/* â”€â”€ SECTION HEADER â”€â”€ */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 30px;
+  margin-top: 60px;
+}
+
+.section-header:first-child { margin-top: 0; }
+
+.section-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #e10600, #8b0000);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+  box-shadow: 0 0 18px rgba(225,6,0,0.35);
+}
+
+.section-header h2 {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin: 0;
+  border-left: 4px solid #e10600;
+  padding-left: 14px;
+}
+
+/* â”€â”€ CARD â”€â”€ */
+.reg-card {
+  background: linear-gradient(135deg, #111827 0%, #0f1520 100%);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px;
+  padding: 28px 32px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+
+.reg-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, #e10600, #ff6b6b);
+}
+
+.reg-card:hover {
+  border-color: rgba(225,6,0,0.25);
+}
+
+.reg-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ff4d4d;
+  margin-bottom: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.reg-card ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.reg-card ul li {
+  margin-bottom: 8px;
+  color: #d1d5db;
+  line-height: 1.65;
+  font-size: 15px;
+}
+
+.reg-card ul li strong {
+  color: #fff;
+}
+
+.reg-card p {
+  color: #d1d5db;
+  line-height: 1.7;
+  font-size: 15px;
+  margin: 0;
+}
+
+/* â”€â”€ GRID 2 COL â”€â”€ */
+.reg-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .reg-grid-2 { grid-template-columns: 1fr; }
+  .hero-content h1 { font-size: 34px; }
+  .hero-regulamento { height: 40vh; }
+}
+
+/* â”€â”€ PROIBIDO CARD â”€â”€ */
+.card-proibido {
+  background: linear-gradient(135deg, #1a0a0a 0%, #150d0d 100%);
+  border-color: rgba(225,6,0,0.2);
+}
+
+.card-proibido::before {
+  background: linear-gradient(180deg, #ff2424, #8b0000);
+}
+
+.badge-proibido {
+  display: inline-block;
+  background: #e10600;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+/* â”€â”€ PONTUAÃ‡ÃƒO TABLE â”€â”€ */
+.score-table-wrapper {
+  overflow-x: auto;
+  border-radius: 12px;
+}
+
+.score-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.score-table thead tr {
+  background: linear-gradient(90deg, #e10600, #8b0000);
+}
+
+.score-table th {
+  padding: 14px 18px;
+  text-align: center;
+  color: white;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border: none;
+}
+
+.score-table td {
+  padding: 12px 18px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  color: #d1d5db;
+  background: transparent;
+}
+
+.score-table tbody tr:hover {
+  background: rgba(225,6,0,0.07) !important;
+}
+
+.score-table tbody tr:nth-child(even) td {
+  background: rgba(255,255,255,0.02);
+}
+
+.pos-num {
+  font-weight: 700;
+  color: #fff;
+  font-size: 16px;
+}
+
+.pos-pts {
+  font-weight: 700;
+  color: #ffd700;
+  font-size: 16px;
+}
+
+.pos-1 .pos-num { color: #ffd700; }
+.pos-2 .pos-num { color: #c0c0c0; }
+.pos-3 .pos-num { color: #cd7f32; }
+
+/* â”€â”€ PENALIDADES TABLE â”€â”€ */
+.pen-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.pen-table th {
+  background: #1a1f35;
+  padding: 12px 16px;
+  text-align: left;
+  color: #ff4d4d;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-bottom: 2px solid #e10600;
+  border-top: none;
+}
+
+.pen-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  color: #d1d5db;
+  background: transparent;
+  vertical-align: top;
+  line-height: 1.6;
+}
+
+.pen-table tr:hover td {
+  background: rgba(225,6,0,0.05);
+}
+
+.pen-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.pen-leve { background: rgba(255,230,0,0.15); color: #ffe600; border: 1px solid rgba(255,230,0,0.3); }
+.pen-moderada { background: rgba(255,140,0,0.15); color: #ff8c00; border: 1px solid rgba(255,140,0,0.3); }
+.pen-grave { background: rgba(255,60,0,0.15); color: #ff3c00; border: 1px solid rgba(255,60,0,0.3); }
+.pen-muito-grave { background: rgba(225,6,0,0.2); color: #ff1a1a; border: 1px solid rgba(225,6,0,0.4); }
+.pen-banimento { background: rgba(100,0,0,0.3); color: #ff4d4d; border: 1px solid rgba(180,0,0,0.5); }
+
+/* â”€â”€ SUPER LICENÃ‡A â”€â”€ */
+.superlicenca-bar {
+  background: linear-gradient(135deg, #111827, #0f1520);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px;
+  padding: 28px;
+  margin-bottom: 20px;
+}
+
+.sl-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #888;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.sl-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.sl-label {
+  width: 160px;
+  font-size: 13px;
+  color: #ccc;
+  flex-shrink: 0;
+}
+
+.sl-track {
+  flex: 1;
+  height: 8px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.sl-fill {
+  height: 100%;
+  border-radius: 99px;
+}
+
+.sl-pts {
+  font-size: 12px;
+  font-weight: 700;
+  color: #ffd700;
+  width: 50px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* â”€â”€ HIGHLIGHT BOX â”€â”€ */
+.highlight-box {
+  background: linear-gradient(135deg, rgba(225,6,0,0.1), rgba(139,0,0,0.08));
+  border: 1px solid rgba(225,6,0,0.3);
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin-bottom: 16px;
+}
+
+.highlight-box p {
+  margin: 0;
+  color: #e5e7eb;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* â”€â”€ INFO BADGE â”€â”€ */
+.info-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.info-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 14px;
+  color: #d1d5db;
+}
+
+.info-chip i {
+  color: #e10600;
+  font-size: 16px;
+}
+
+/* â”€â”€ DIVIDER â”€â”€ */
+.reg-divider {
+  width: 80%;
+  height: 1px;
+  margin: 50px auto;
+  background: linear-gradient(to right, transparent, rgba(225,6,0,0.4), transparent);
+}
+
+/* â”€â”€ DOWNLOAD CTA â”€â”€ */
+.download-final {
+  text-align: center;
+  margin: 60px 0 40px;
+}
+
+.download-btn-final {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 46px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #fff;
+  text-decoration: none;
+  background: linear-gradient(135deg, #e10600, #8b0000);
+  border-radius: 50px;
+  box-shadow: 0 8px 30px rgba(225,6,0,0.4);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.download-btn-final:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 40px rgba(225,6,0,0.6);
+  color: #fff;
+}
+
+/* â”€â”€ CLOSING QUOTE â”€â”€ */
+.closing-quote {
+  text-align: center;
+  padding: 60px 24px;
+  background: linear-gradient(135deg, rgba(225,6,0,0.06), rgba(0,0,0,0));
+  border-top: 1px solid rgba(225,6,0,0.15);
+  margin-top: 40px;
+}
+
+.closing-quote blockquote {
+  font-size: 20px;
+  font-weight: 700;
+  color: #e5e7eb;
+  line-height: 1.6;
+  max-width: 700px;
+  margin: 0 auto 20px;
+  letter-spacing: 0.5px;
+}
+
+.closing-quote .brand {
+  color: #e10600;
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center" href="index.html">
+      <img src="fotosmenu/logo.png" class="logo">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="menu">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="index.html">Inicial</a></li>
+        <li class="nav-item" data-auth-admin><a class="nav-link" href="grid_edit.html">Editar Grids</a></li>
+        <li class="nav-item" data-auth-admin><a class="nav-link" href="pilot_management.html">Gerenciar Pilotos</a></li>
+        <li class="nav-item" data-auth-admin><a class="nav-link" href="admin_users.html">Logins</a></li>
+        <li class="nav-item"><a class="nav-link active" href="regulamento.html">Regulamento</a></li>
+        <li class="nav-item" id="btn-login-nav" style="display:none">
+            <a class="nav-link" href="login.html" style="color:#e10600;font-weight:600"><i class="bi bi-box-arrow-in-right me-1"></i>Entrar</a>
+        </li>
+        <li class="nav-item" id="btn-logout-nav" style="display:none">
+            <a class="nav-link" href="#" onclick="Auth.logout(); window.location.href='index.html';" style="color:#888;font-weight:600"><i class="bi bi-box-arrow-right me-1"></i>Sair (<span id="nav-username"></span>)</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero-regulamento">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="eyebrow">Temporada 2026</span>
+    <h1>REGULAMENTO<br>OFICIAL</h1>
+  </div>
+</section>
+
+<!-- CONTENT -->
+<div class="reg-container">
+
+  <!-- â”€â”€â”€ A LIGA â”€â”€â”€ -->
+  <div class="section-header">
+    <div class="section-icon">ðŸ</div>
+    <h2>A Elite Racing</h2>
+  </div>
+
+  <div class="reg-card">
+    <p>A <strong>Elite Racing</strong> Ã© uma liga de FÃ³rmula 1 online onde organizamos campeonatos no <strong>F1 25</strong> e <strong>F1 24</strong>. Aqui vocÃª encontra asfalto, emoÃ§Ã£o e velocidade em competiÃ§Ãµes sÃ©rias e bem estruturadas.</p>
+  </div>
+
+  <div class="info-row">
+    <div class="info-chip"><i class="bi bi-instagram"></i> @elite_racinggrid</div>
+    <div class="info-chip"><i class="bi bi-tiktok"></i> @elite.racinggrid</div>
+    <div class="info-chip"><i class="bi bi-phone"></i> App Formula Game Companion</div>
+    <div class="info-chip"><i class="bi bi-key-fill"></i> CÃ³digo de acesso: <strong style="color:#fff;margin-left:4px;">1XMKERU2QSG</strong></div>
+  </div>
+
+  <div class="reg-divider"></div>
+
+  <!-- â”€â”€â”€ MODELO DE DISPUTA â”€â”€â”€ -->
+  <div class="section-header">
+    <div class="section-icon">ðŸŽ®</div>
+    <h2>Modelo de Disputa</h2>
+  </div>
+
+  <div class="reg-grid-2">
+    <div class="reg-card">
+      <h3>Campeonato F1 24</h3>
+      <ul>
+        <li>A <strong>primeira etapa</strong> serÃ¡ disputada com desempenho igual.</li>
+        <li>As <strong>demais etapas</strong> serÃ£o realizadas com desempenho realista.</li>
+        <li>A cada etapa, a classificaÃ§Ã£o geral serÃ¡ utilizada para reorganizar os carros na etapa seguinte.</li>
+      </ul>
+    </div>
+    <div class="reg-card">
+      <h3>Campeonato F1 25</h3>
+      <ul>
+        <li>Todas as etapas com <strong>desempenho igual</strong>.</li>
+        <li>Pilotos divididos em <strong>grids (divisÃµes)</strong> por nÃ­vel de habilidade.</li>
+        <li>Ao final de cada temporada, os <strong>3 primeiros</strong> de cada grid sobem; os <strong>3 Ãºltimos</strong> sÃ£o rebaixados.</li>
+        <li>Sistema garante o nivelamento tÃ©cnico por habilidade ao longo do tempo.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="reg-grid-2">
+    <div class="reg-card">
+      <h3>Entrada de Novos Pilotos</h3>
+      <ul>
+        <li>Se nÃ£o houver vaga, um <strong>novo grid de acesso</strong> serÃ¡ criado abaixo do Ãºltimo grid oficial.</li>
+        <li>O grid de acesso <strong>nÃ£o possui</strong> taxa de inscriÃ§Ã£o, premiaÃ§Ã£o ou transmissÃ£o.</li>
+        <li>No inÃ­cio de nova temporada com inscritos, o grid se torna <strong>oficial</strong> (com taxa, premiaÃ§Ã£o e transmissÃ£o).</li>
+      </ul>
+    </div>
+    <div class="reg-card">
+      <h3>Recusa de PromoÃ§Ã£o</h3>
+      <ul>
+        <li>Piloto que sobe de grid mas <strong>opta por nÃ£o subir</strong> pode permanecer no grid atual.</li>
+        <li>Neste caso, <strong>abre mÃ£o</strong> de qualquer premiaÃ§Ã£o Ã  qual teria direito.</li>
+        <li>Em caso de desistÃªncias, sobem pilotos das divisÃµes inferiores por ordem de classificaÃ§Ã£o.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="reg-divider"></div>
+
+  <!-- â”€â”€â”€ ESTRUTURA â”€â”€â”€ -->
+  <div class="section-header">
+    <div class="section-icon">ðŸ“‹</div>
+    <h2>Estrutura do Campeonato</h2>
+  </div>
+
+  <div class="reg-card">
+    <ul>
+      <li>O campeonato Ã© composto por <strong>10 etapas</strong>, disputadas em circuitos oficiais de F1 24 e F1 25.</li>
+      <li>Cada etapa tem corrida com <strong>50% da distÃ¢ncia</strong>, conforme configuraÃ§Ã£o padrÃ£o do jogo.</li>
+      <li><strong>Setups liberados</strong> para todos os pilotos.</li>
+      <li><strong>AssistÃªncias liberadas</strong>.</li>
+      <li><strong>Corte de curva rÃ­gido</strong>.</li>
+      <li><strong>Dano padrÃ£o.</strong></li>
+    </ul>
+  </div>
+
+
+  <div class="reg-divider"></div>
+
+  <!-- â”€â”€â”€ REGRAS DE COMUNIDADE â”€â”€â”€ -->
+  <div class="section-header">
+    <div class="section-icon">ðŸ¤</div>
+    <h2>Regras de Comunidade</h2>
+  </div>
+
+  <div class="reg-card">
+    <h3>Uso dos grupos oficiais</h3>
+    <p>Os grupos oficiais devem ser utilizados <strong>exclusivamente</strong> para assuntos relacionados Ã  liga, como: F1 online, setups, corridas, resultados e organizaÃ§Ã£o.</p>
+  </div>
+
+  <div class="reg-card card-proibido">
+    <span class="badge-proibido">ðŸš« Ã‰ Proibido</span>
+    <ul>
+      <li>Spam e divulgaÃ§Ã£o de promoÃ§Ãµes.</li>
+      <li>ConteÃºdos irrelevantes ou excesso de memes.</li>
+      <li><strong>HorÃ¡rio silencioso: das 23h Ã s 8h</strong> (exceto anÃºncios oficiais da administraÃ§Ã£o).</li>
+      <li>Qualquer tipo de ofensa, discriminaÃ§Ã£o ou questionamento da idoneidade de pilotos â€” resultarÃ¡ em advertÃªncia ou remoÃ§Ã£o.</li>
+      <li>ConteÃºdos relacionados a ideologias polÃ­ticas e pornografia.</li>
+    </ul>
+  </div>
+
+  <div class="reg-divider"></div>
+
+  <!-- â”€â”€â”€ PONTUAÃ‡ÃƒO â”€â”€â”€ -->
+  <div class="section-header">
+    <div class="section-icon">ðŸ†</div>
+    <h2>Sistema de PontuaÃ§Ã£o</h2>
+  </div>
+
+  <div class="reg-grid-2">
+    <!-- F1 25 -->
+    <div>
+      <div class="section-header" style="margin-top:0">
+        <h2 style="border-left-color:#ff8800;font-size:17px;">F1 25</h2>
+      </div>
+      <div class="score-table-wrapper">
+        <table class="score-table">
+          <thead>
+            <tr><th>PosiÃ§Ã£o</th><th>Pontos</th></tr>
+          </thead>
+          <tbody>
+            <tr class="pos-1"><td class="pos-num">1Âº</td><td class="pos-pts">40</td></tr>
+            <tr class="pos-2"><td class="pos-num">2Âº</td><td class="pos-pts">33</td></tr>
+            <tr class="pos-3"><td class="pos-num">3Âº</td><td class="pos-pts">28</td></tr>
+            <tr><td class="pos-num">4Âº</td><td class="pos-pts">24</td></tr>
+            <tr><td class="pos-num">5Âº</td><td class="pos-pts">22</td></tr>
+            <tr><td class="pos-num">6Âº</td><td class="pos-pts">20</td></tr>
+            <tr><td class="pos-num">7Âº</td><td class="pos-pts">18</td></tr>
+            <tr><td class="pos-num">8Âº</td><td class="pos-pts">16</td></tr>
+            <tr><td class="pos-num">9Âº</td><td class="pos-pts">14</td></tr>
+            <tr><td class="pos-num">10Âº</td><td class="pos-pts">12</td></tr>
+            <tr><td class="pos-num">11Âº</td><td class="pos-pts">10</td></tr>
+            <tr><td class="pos-num">12Âº</td><td class="pos-pts">9</td></tr>
+            <tr><td class="pos-num">13Âº</td><td class="pos-pts">8</td></tr>
+            <tr><td class="pos-num">14Âº</td><td class="pos-pts">7</td></tr>
+            <tr><td class="pos-num">15Âº</td><td class="pos-pts">6</td></tr>
+            <tr><td class="pos-num">16Âº</td><td class="pos-pts">5</td></tr>
+            <tr><td class="pos-num">17Âº</td><td class="pos-pts">4</td></tr>
+            <tr><td class="pos-num">18Âº</td><td class="pos-pts">3</td></tr>
+            <tr><td class="pos-num">19Âº</td><td class="pos-pts">2</td></tr>
+            <tr><td class="pos-num">20Âº</td><td class="pos-pts">1</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- F1 24 -->
+    <div>
+      <div class="section-header" style="margin-top:0">
+        <h2 style="border-left-color:#0090ff;font-size:17px;">F1 24</h2>
+      </div>
+      <div class="score-table-wrapper">
+        <table class="score-table">
+          <thead>
+            <tr><th>PosiÃ§Ã£o</th><th>Pontos</th></tr>
+          </thead>
+          <tbody>
+            <tr class="pos-1"><td class="pos-num">1Âº</td><td class="pos-pts">25</td></tr>
+            <tr class="pos-2"><td class="pos-num">2Âº</td><td class="pos-pts">18</td></tr>
+            <tr class="pos-3"><td class="pos-num">3Âº</td><td class="pos-pts">15</td></tr>
+            <tr><td class="pos-num">4Âº</td><td class="pos-pts">12</td></tr>
+            <tr><td class="pos-num">5Âº</td><td class="pos-pts">10</td></tr>
+            <tr><td class="pos-num">6Âº</td><td class="pos-pts">8</td></tr>
+            <tr><td class="pos-num">7Âº</td><td class="pos-pts">6</td></tr>
+            <tr><td class="pos-num">8Âº</td><td class="pos-pts">4</td></tr>
+            <tr><td class="pos-num">9Âº</td><td class="pos-pts">2</td></tr>
+            <tr><td class="pos-num">10Âº</td><td class="pos-pts">1</td></tr>
+            <tr><td class="pos-num">11Âºâ€“20Âº</td><td class="pos-pts">0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="reg-divider"></div>
+
+  <!-- â”€â”€â”€ CONDUTA - CORRIDA â”€â”€â”€ -->
+  <div class="section-header">
+    <div class="section-icon">âš ï¸</div>
+    <h2>Conduta em Corrida</h2>
+  </div>
+
+  <div class="reg-card">
+    <h3>Abandono e DNF</h3>
+    <ul>
+      <li>Pilotos que <strong>abandonarem a corrida</strong> perderÃ£o 1 ponto. (Exceto se o abandono foi causado por batida de outro piloto.)</li>
+      <li>Pilotos que <strong>saÃ­rem da sessÃ£o sem justificativa</strong> perderÃ£o 1 ponto.</li>
+      <li>Penalidades aplicadas pelo jogo <strong>nÃ£o poderÃ£o ser removidas</strong>.</li>
+      <li>Incidentes graves serÃ£o analisados por comissÃ¡rio para puniÃ§Ã£o direta e rigorosa.</li>
+    </ul>
+  </div>
+
+  <div class="reg-card">
+    <h3>DenÃºncias e Defesas</h3>
+    <ul>
+      <li>Toda denÃºncia ou defesa deve ser acompanhada de <strong>vÃ­deo da cÃ¢mera onboard</strong>. Sem onboard de defesa, cabe ao comissÃ¡rio punir.</li>
+      <li>DenÃºncias e defesas devem ser realizadas no <strong>Discord oficial</strong>, na aba especÃ­fica.</li>
+      <li><strong>Prazo para denÃºncias:</strong> atÃ© 12h do dia seguinte Ã  corrida.</li>
+      <li><strong>Prazo para defesas:</strong> atÃ© 20h do dia seguinte Ã  corrida.</li>
+      <li>As denÃºncias serÃ£o analisadas por comissÃ¡rios <strong>sem vÃ­nculo com o grid envolvido</strong>.</li>
+    </ul>
+  </div>
+
+  <div class="reg-card">
+    <h3>Regras de Qualy</h3>
+    <ul>
+      <li>Ã‰ proibido usar "abandonar a sessÃ£o" enquanto em volta rÃ¡pida ou em retorno para os boxes antes do rendimento atingir temperatura.</li>
+      <li>Se a sua IA puder atrapalhar a volta de outro piloto, <strong>nÃ£o abandone</strong>.</li>
+      <li>Ã‰ proibido bater o carro propositalmente ou posicionÃ¡-lo em Ã¡reas de escape para afetar as voltas alheias.</li>
+      <li>Se jÃ¡ tiver volta registrada na Qualy, pode <strong>REDEFINIR</strong> por seguranÃ§a para nÃ£o tomar DSQ.</li>
+    </ul>
+  </div>
+
+  <div class="reg-card">
+    <h3>Regras de Corrida</h3>
+    <ul>
+      <li>Ao sair da pista, retorne ao traÃ§ado <strong>sem afetar</strong> outro piloto. NÃ£o Ã© responsabilidade dos demais se desviarem.</li>
+      <li>Ã‰ proibido usar "redefinir para a pista" para recuperar de erros ou incidentes â€” exceto na Qualy com volta registrada.</li>
+      <li>Se o carro parar no meio do circuito, aguarde-o se mover para local seguro antes de recuperar posiÃ§Ã£o.</li>
+      <li>Ao receber <strong>bandeira azul</strong>, dÃª passagem na primeira oportunidade, saindo do traÃ§ado ideal.</li>
+      <li>Para abandonar a corrida: entre nos boxes e selecione "abandonar a sessÃ£o". <strong>Ã‰ proibido bater de propÃ³sito para abandonar</strong> â€” pena de desclassificaÃ§Ã£o.</li>
+    </ul>
+  </div>
+
+  <div class="reg-card">
+    <h3>Bandeiras e Procedimentos Especiais</h3>
+    <ul>
+      <li>Em caso de <strong>retardatÃ¡rios</strong>, Ã© obrigatÃ³rio ceder posiÃ§Ã£o em Safety Car.</li>
+      <li><strong>Ultrapassagem ilegal</strong> (fora da pista, em bandeira amarela ou com corte de curva): ceder a posiÃ§Ã£o na primeira oportunidade segura.</li>
+      <li>Em casos de <strong>asa dianteira vermelha</strong> (dano), o piloto deve ceder posiÃ§Ã£o de forma segura, mas mantÃ©m seu direito Ã  posiÃ§Ã£o.</li>
+      <li>Abuso de velocidade no SC/VSC (delta muito baixo) serÃ¡ analisado mediante denÃºncia.</li>
+      <li>Ã‰ proibido bater nas placas de referÃªncia de frenagem de forma proposital.</li>
+    </ul>
+  </div>
+
+  <div class="reg-divider"></div>
+
+  <!-- â”€â”€â”€ PENALIDADES â”€â”€â”€ -->
+  <div class="section-header">
+    <div class="section-icon">âš–ï¸</div>
+    <h2>Regulamento de Penalidades â€” Art. 7Âº</h2>
+  </div>
+
+  <div class="highlight-box">
+    <p><strong>DisposiÃ§Ãµes gerais:</strong> As penalidades de tempo corrigem infraÃ§Ãµes que influenciam a disputa, a seguranÃ§a ou a integridade esportiva. Todas as penalidades geram pontos na <strong>Super LicenÃ§a</strong>. A deduÃ§Ã£o de pontos no campeonato sÃ³ Ã© aplicada quando o infrator abandona a corrida ou quando a penalidade de tempo nÃ£o gera impacto real no resultado.</p>
+  </div>
+
+  <div class="score-table-wrapper" style="border-radius:14px;overflow:hidden;margin-bottom:20px;">
+    <table class="pen-table" style="background:#111827;">
+      <thead>
+        <tr>
+          <th>Tipo de InfraÃ§Ã£o</th>
+          <th>Exemplos</th>
+          <th>Penalidade de Tempo</th>
+          <th>Super LicenÃ§a</th>
+          <th>Pontos Camp.</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="pen-badge pen-leve">ðŸŸ¡ Leve</span></td>
+          <td>Pequeno ganho de vantagem sem devoluÃ§Ã£o; toque leve sem danos; retorno inseguro sem acidente grave.</td>
+          <td>+5 segundos</td>
+          <td>+1 ponto</td>
+          <td>-1 pto (se aplicÃ¡vel)</td>
+        </tr>
+        <tr>
+          <td><span class="pen-badge pen-moderada">ðŸŸ  Moderada</span></td>
+          <td>ColisÃ£o com prejuÃ­zo significativo; forÃ§ar piloto para fora da pista; defesa excessivamente agressiva.</td>
+          <td>+10 segundos</td>
+          <td>+2 pontos</td>
+          <td>-2 ptos (se aplicÃ¡vel)</td>
+        </tr>
+        <tr>
+          <td><span class="pen-badge pen-grave">ðŸ”´ Grave</span></td>
+          <td>Manobra perigosa; conduta imprudente que comprometa a seguranÃ§a; mÃºltiplos incidentes no mesmo GP.</td>
+          <td>+15 segundos</td>
+          <td>+3 pontos</td>
+          <td>-3 ptos (se aplicÃ¡vel)</td>
+        </tr>
+        <tr>
+          <td><span class="pen-badge pen-muito-grave">ðŸš¨ Muito Grave</span></td>
+          <td>Batida proposital; atitude antiesportiva que viole o espÃ­rito esportivo.</td>
+          <td>+20 segundos</td>
+          <td>+4 pontos</td>
+          <td>-4 ptos (se aplicÃ¡vel)</td>
+        </tr>
+        <tr>
+          <td><span class="pen-badge pen-banimento">â˜  Banimento</span></td>
+          <td>Racismo, homofobia, xenofobia ou qualquer discriminaÃ§Ã£o.</td>
+          <td colspan="3" style="text-align:center;color:#ff4d4d;font-weight:700;">DesclassificaÃ§Ã£o imediata e banimento da liga</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="reg-card">
+    <h3>InfraÃ§Ãµes â€” ClassificaÃ§Ã£o Adicional</h3>
+    <ul>
+      <li><strong>Leve:</strong> Conduta imprudente; colisÃ£o sem danos; bloqueio ou mudanÃ§a de direÃ§Ã£o na frenagem; ultrapassagem ilegal com devoluÃ§Ã£o imediata; retorno inseguro; falhas em procedimento de SC.</li>
+      <li><strong>MÃ©dia:</strong> ColisÃ£o com danos; incidente com dois ou mais pilotos; forÃ§ar piloto para fora da pista; sair da pista para obter vantagem.</li>
+      <li><strong>Grave:</strong> ColisÃ£o que resulte em DNF de outro piloto; conduta antiesportiva (ex.: forÃ§ar Safety Car por benefÃ­cio prÃ³prio).</li>
+    </ul>
+    <p style="margin-top:12px;color:#888;font-size:13px;">âš™ï¸ PuniÃ§Ãµes adicionais poderÃ£o ser aplicadas a critÃ©rio do comissÃ¡rio.</p>
+  </div>
+
+  <div class="reg-divider"></div>
+
+  <!-- â”€â”€â”€ SUPER LICENÃ‡A â”€â”€â”€ -->
+  <div class="section-header">
+    <div class="section-icon">ðŸªª</div>
+    <h2>Carteira de Pontos â€” Super LicenÃ§a</h2>
+  </div>
+
+  <div class="reg-card">
+    <ul>
+      <li>Cada piloto possui uma <strong>carteira de pontuaÃ§Ã£o disciplinar</strong> (Super LicenÃ§a).</li>
+      <li>Ao atingir <strong>10 pontos</strong>, o piloto ficarÃ¡ impedido de disputar a corrida seguinte.</li>
+      <li>Os pontos <strong>expiram ao final da temporada</strong>.</li>
+    </ul>
+  </div>
+
+  <div class="superlicenca-bar">
+    <div class="sl-title">SimulaÃ§Ã£o de Super LicenÃ§a</div>
+    <div class="sl-row">
+      <span class="sl-label">ðŸŸ¡ InfraÃ§Ã£o Leve</span>
+      <div class="sl-track"><div class="sl-fill" style="width:10%;background:linear-gradient(90deg,#ffe600,#ffaa00);"></div></div>
+      <span class="sl-pts">+1 pto</span>
+    </div>
+    <div class="sl-row">
+      <span class="sl-label">ðŸŸ  Moderada</span>
+      <div class="sl-track"><div class="sl-fill" style="width:20%;background:linear-gradient(90deg,#ff8c00,#ff5500);"></div></div>
+      <span class="sl-pts">+2 ptos</span>
+    </div>
+    <div class="sl-row">
+      <span class="sl-label">ðŸ”´ Grave</span>
+      <div class="sl-track"><div class="sl-fill" style="width:30%;background:linear-gradient(90deg,#ff3c00,#cc0000);"></div></div>
+      <span class="sl-pts">+3 ptos</span>
+    </div>
+    <div class="sl-row">
+      <span class="sl-label">ðŸš¨ Muito Grave</span>
+      <div class="sl-track"><div class="sl-fill" style="width:40%;background:linear-gradient(90deg,#e10600,#8b0000);"></div></div>
+      <span class="sl-pts">+4 ptos</span>
+    </div>
+    <div class="sl-row">
+      <span class="sl-label" style="color:#ff4d4d;font-weight:600;">â›” Limite suspensÃ£o</span>
+      <div class="sl-track"><div class="sl-fill" style="width:100%;background:linear-gradient(90deg,#ff0000,#ff4d4d);"></div></div>
+      <span class="sl-pts" style="color:#ff4d4d;">10 ptos</span>
+    </div>
+  </div>
+
+  <div class="reg-divider"></div>
+
+  <!-- â”€â”€â”€ PILOTO RESERVA â”€â”€â”€ -->
+  <div class="section-header">
+    <div class="section-icon">ðŸ”„</div>
+    <h2>Piloto Reserva</h2>
+  </div>
+
+  <div class="reg-card">
+    <ul>
+      <li>Cada equipe poderÃ¡ contar com <strong>1 piloto reserva</strong>, desde que esteja no grid imediatamente inferior.</li>
+      <li>Cada piloto titular pode ser substituÃ­do por <strong>no mÃ¡ximo 4 corridas</strong> por temporada.</li>
+      <li>O piloto reserva <strong>pontua tanto para si quanto para a equipe</strong>.</li>
+      <li><strong>NÃ£o serÃ¡ cobrada</strong> taxa de inscriÃ§Ã£o de piloto reserva.</li>
+    </ul>
+  </div>
+
+  <div class="reg-divider"></div>
+
+  <!-- â”€â”€â”€ PREMIAÃ‡ÃƒO â”€â”€â”€ -->
+  <div class="section-header">
+    <div class="section-icon">ðŸ¥‡</div>
+    <h2>PremiaÃ§Ã£o e Ranking</h2>
+  </div>
+
+  <div class="reg-grid-2">
+    <div class="reg-card">
+      <h3>PremiaÃ§Ã£o</h3>
+      <ul>
+        <li>Ao final do campeonato, serÃ£o premiados os <strong>3 primeiros colocados de cada grid</strong>.</li>
+        <li>PrÃªmios: <strong>Dinheiro, TrofÃ©u e BÃ´nus</strong> (quando aplicÃ¡vel).</li>
+      </ul>
+    </div>
+    <div class="reg-card">
+      <h3>Ranking F1VL</h3>
+      <ul>
+        <li>A liga contabiliza pontos para o <strong>Ranking F1VL</strong>.</li>
+        <li>Acompanhe sua evoluÃ§Ã£o e posiÃ§Ã£o global entre os pilotos virtuais.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="reg-divider"></div>
+
+  <!-- â”€â”€â”€ DISPOSIÃ‡Ã•ES FINAIS â”€â”€â”€ -->
+  <div class="section-header">
+    <div class="section-icon">ðŸ“œ</div>
+    <h2>DisposiÃ§Ãµes Finais</h2>
+  </div>
+
+  <div class="reg-card">
+    <ul>
+      <li>Ao ingressar na Elite Racing, o piloto declara estar <strong>ciente e de acordo</strong> com todos os termos deste regulamento.</li>
+      <li>Qualquer piloto pode notificar a administraÃ§Ã£o sobre problemas envolvendo outros pilotos. <strong>Viu algo que fere o cÃ³digo de conduta? DENUNCIE.</strong></li>
+      <li>As regras visam oferecer um melhor ambiente de competiÃ§Ã£o e <strong>diversÃ£o</strong> para todos os participantes.</li>
+    </ul>
+  </div>
+
+  <!-- â”€â”€â”€ DOWNLOAD â”€â”€â”€ -->
+  <div class="download-final">
+    <a class="download-btn-final" href="pdf/regulamento elite racing 2026 atualizaÃ§Ã£o 1.0.pdf" download>
+      <i class="bi bi-file-earmark-pdf-fill"></i>
+      Baixar Regulamento Completo (PDF)
+    </a>
+  </div>
+
+</div>
+
+<!-- CLOSING QUOTE -->
+<div class="closing-quote">
+  <blockquote>
+    "Mais do que resultados, queremos que este campeonato fortaleÃ§a a nossa comunidade, estimule a amizade e o respeito entre os competidores."
+  </blockquote>
+  <div class="brand">NOS VEMOS NA PISTA â€” ELITE RACING ðŸ</div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  &copy; 2026 Elite Racing League. Todos os direitos reservados.<br>
+  Desenvolvido por <strong>JosuÃ© Nogueira</strong>
+  <a href="https://wa.me/5511951642119" target="_blank" style="text-decoration:none;margin:0 4px;" title="WhatsApp"><i class="bi bi-whatsapp" style="color:#25D366;font-size:1.1rem;"></i></a>
+  <a href="mailto:josu.nogueira@gmail.com" style="text-decoration:none;margin:0 4px;" title="E-mail"><i class="bi bi-envelope-fill" style="color:#ea4335;font-size:1.1rem;"></i></a>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/app.js"></script>
+<script src="js/auth.js"></script>
+<script>document.addEventListener('DOMContentLoaded', function(){ Auth.updateNavLinks(); });</script>
+
+</body>
+</html>
