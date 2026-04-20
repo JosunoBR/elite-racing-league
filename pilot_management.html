@@ -279,10 +279,7 @@
                                 <input type="text" class="form-control" id="inputNick" placeholder="Ex: ERT">
                             </div>
 
-                            <div class="mb-3">
-                                <label class="form-label">Equipe</label>
-                                <input type="text" class="form-control" id="inputEquipe" placeholder="Ex: Elite Racing Team">
-                            </div>
+
 
                             <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-primary">
@@ -413,7 +410,7 @@
             const pilotId = document.getElementById("inputPilotId").value.trim();
             const nome = document.getElementById("inputNome").value.trim();
             const nick = document.getElementById("inputNick").value.trim();
-            const equipe = document.getElementById("inputEquipe").value.trim();
+
 
             if (!pilotId || !nome) {
                 alert("ID e Nome são campos obrigatórios!");
@@ -447,7 +444,7 @@
                     id: pilotId,
                     nome: nome,
                     nick: nick,
-                    equipe: equipe,
+
                     imagem: imagePath
                 };
 
@@ -502,7 +499,7 @@
             document.getElementById("inputPilotId").disabled = true;
             document.getElementById("inputNome").value = pilot.nome || "";
             document.getElementById("inputNick").value = pilot.nick || "";
-            document.getElementById("inputEquipe").value = pilot.equipe || "";
+
             currentStoredPhotoPath = pilot.imagem || "";
 
             // Mostrar foto se existir
@@ -642,7 +639,6 @@
                             </div>
                             <div class="pilot-details">
                                 ${pilot.nick ? `Nick: ${pilot.nick}` : ""} 
-                                ${pilot.equipe ? ` | Equipe: ${pilot.equipe}` : ""}
                             </div>
                         </div>
                         <div class="actions">
@@ -661,7 +657,7 @@
             }).join("");
         }
 
-        function updateGridWithPilot(pilotId, nome, equipe) {
+        function updateGridWithPilot(pilotId, nome) {
             // Atualizar grids existentes se o piloto já estiver cadastrado
             const grids = typeof loadEditableGrids === "function" ? loadEditableGrids() : [];
             

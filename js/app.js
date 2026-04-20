@@ -141,6 +141,9 @@ function renderizarTabelas() {
         const leaderClass = i === 0 ? "leader-card" : "";
         const pilotImage = (piloto.pilotId && pilotRegistry.getImage(piloto.pilotId)) || "fotosmenu/logo.png";
         return `<div class="swiper-slide"><div class="card-piloto ${leaderClass}"><img src="${pilotImage}" onerror="this.src='fotosmenu/logo.png'" class="img-click"><div class="card-body"><div class="nome">${escapeHtml(piloto.nome)}</div><div class="equipe">${escapeHtml(formatTeamName(piloto.equipe) || "Sem equipe")}</div><div class="points">${formatPoints(piloto.total)} PTS</div></div></div></div>`;
+        const fullPilot = piloto.pilotId ? pilotRegistry.getById(piloto.pilotId) : null;
+        const pilotNick = fullPilot ? fullPilot.nick : '';
+        return `<div class="swiper-slide"><div class="card-piloto ${leaderClass}"><img src="${pilotImage}" onerror="this.src='fotosmenu/logo.png'" class="img-click"><div class="card-body"><div class="nome">${escapeHtml(piloto.nome)}</div><div class="equipe">${escapeHtml(pilotNick)}</div><div class="d-flex justify-content-between align-items-center"><span>${escapeHtml(formatTeamName(piloto.equipe) || "Sem equipe")}</span><span class="points">${formatPoints(piloto.total)} PTS</span></div></div></div></div>`;
       }).join("");
       swiperHtml = `
         <div class="swiper">
