@@ -14,6 +14,17 @@
     <script src="js/auth.js"></script>
     <script>Auth.requireLogin('login.html?redirect=pilot_management.html');</script>
     <style>
+        /* Direção de texto LTR (Left-to-Right) */
+        html, body, * {
+            direction: ltr;
+            unicode-bidi: embed;
+        }
+        input, textarea, select, button, [contenteditable="true"] {
+            direction: ltr !important;
+            unicode-bidi: embed !important;
+            text-align: left !important;
+        }
+
         body {
             background: linear-gradient(180deg, #111, #000);
             color: #fff;
@@ -216,10 +227,10 @@
             <div class="collapse navbar-collapse" id="menu">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="index.html">Inicial</a></li>
+                    <li class="nav-item"><a class="nav-link" href="regulamento.html">Regulamento</a></li>
                     <li class="nav-item" data-auth-admin><a class="nav-link" href="grid_edit.html">Lançar Resultados</a></li>
                     <li class="nav-item" data-auth-admin><a class="nav-link active" href="pilot_management.html">Gerenciar Pilotos</a></li>
                     <li class="nav-item" data-auth-admin><a class="nav-link" href="admin_users.html">Logins</a></li>
-                    <li class="nav-item"><a class="nav-link" href="regulamento.html">Regulamento</a></li>
                     <li class="nav-item" id="btn-login-nav" style="display:none">
                         <a class="nav-link" href="login.html" style="color:#e10600;font-weight:600"><i class="bi bi-box-arrow-in-right me-1"></i>Entrar</a>
                     </li>
@@ -409,6 +420,12 @@
                 return;
             }
 
+            // Trava: não permitir criar um piloto novo com um ID que já existe
+            if (editingPilotId !== pilotId && pilotRegistry.getById(pilotId)) {
+                alert(`O ID "${pilotId}" já está em uso por outro piloto! Por favor, escolha um ID diferente.`);
+                return;
+            }
+
             const form = document.getElementById("pilotForm");
             const btn = form.querySelector('button[type="submit"]');
             const originalText = btn.innerHTML;
@@ -550,6 +567,43 @@
             }
         }
 
+        function confirmDeletePilot(pilotId) {
+            const pilot = pilotRegistry.getById(pilotId);
+            if (!pilot) return;
+
+            const modalEl = document.getElementById('confirmModal');
+            const modal = new bootstrap.Modal(modalEl);
+
+            modalEl.querySelector('.modal-title').textContent = 'Excluir Piloto';
+            modalEl.querySelector('.modal-body p').innerHTML = `<span style="color: #dc3545;"><strong>Atenção!</strong></span> Deseja realmente excluir o piloto <strong>${pilot.nome || pilotId}</strong>? Esta ação é irreversível e removerá o piloto de todos os grids e seu cadastro completo.`;
+            
+            const confirmBtn = document.getElementById("confirmDeleteBtn");
+            confirmBtn.textContent = 'Excluir Piloto';
+            confirmBtn.className = 'btn btn-danger';
+            confirmBtn.onclick = function() {
+                deletePilot(pilotId);
+                modal.hide();
+            };
+
+            modal.show();
+        }
+
+        async function deletePilot(pilotId) {
+            try {
+                if (typeof erlPersistence !== "undefined") {
+                    await erlPersistence.deletePilot(pilotId);
+                }
+                pilotRegistry.removePilot(pilotId);
+                if (editingPilotId === pilotId) {
+                    clearForm();
+                }
+                renderPilotList();
+            } catch (error) {
+                console.error(error);
+                alert("Nao foi possivel excluir o piloto.");
+            }
+        }
+
         function renderPilotList(searchTerm = "") {
             const list = document.getElementById("pilotList");
             const allPilots = pilotRegistry.getAll();
@@ -595,7 +649,10 @@
                             <button class="btn btn-sm btn-primary" onclick="editPilot('${pilot.id}')" title="Editar">
                                 <i class="bi bi-pencil"></i>
                             </button>
-                            <button class="btn btn-sm btn-danger" onclick="confirmRemovePhoto('${pilot.id}')" title="Remover foto">
+                            <button class="btn btn-sm btn-warning" onclick="confirmRemovePhoto('${pilot.id}')" title="Remover foto">
+                                <i class="bi bi-image"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="confirmDeletePilot('${pilot.id}')" title="Excluir piloto">
                                 <i class="bi bi-trash"></i>
                             </button>
                         </div>

@@ -2,6 +2,27 @@ if (typeof pilotRegistry !== "undefined" && pilotRegistry.initFromPilotosJS) {
   pilotRegistry.initFromPilotosJS();
 }
 
+// ========== LISTENERS PARA REATIVIDADE E MONITORAMENTO ==========
+
+// Listener para reatividade em mesma aba
+window.addEventListener('gridUpdated', function(event) {
+  console.log('[app.js] Detectado atualização de grids', event.detail);
+  setTimeout(function() {
+    renderizarTabelas();
+  }, 100);
+});
+
+// Listener para falhas de persistência
+window.addEventListener('persistenceFailure', function(event) {
+  console.warn('[app.js] Falha de sincronização:', event.detail);
+  // Opcional: mostrar notificação no UI
+  var notification = document.createElement('div');
+  notification.style.cssText = 'position:fixed;top:10px;right:10px;background:#dc3545;color:white;padding:15px;border-radius:5px;z-index:9999;max-width:400px;';
+  notification.textContent = '⚠️ Falha ao sincronizar dados. Tentando novamente...';
+  document.body.appendChild(notification);
+  setTimeout(function() { notification.remove(); }, 5000);
+});
+
 function escapeHtml(str) {
   return String(str || '').replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>');
 }

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-03-26T16:10:29.233Z",
+  "updatedAt": "2026-04-20T19:50:32.210Z",
   "grids": [
     {
       "id": "grid1",
@@ -74,12 +74,12 @@
         },
         {
           "id": 4,
-          "pilotId": "pilot_1774541385197874",
+          "pilotId": "30",
           "nome": "Josué Nogueira",
-          "equipe": "Audi",
+          "equipe": "Redbull",
           "etapas": [
-            "28",
-            "38",
+            "35",
+            "35",
             "",
             "",
             "",
@@ -2477,10 +2477,10 @@
     },
     "30": {
       "id": "30",
-      "nome": "Gladson Rosa",
-      "nick": "ERT",
-      "equipe": "Elite Racing Team",
-      "imagem": "pilotos/30.jfif"
+      "nome": "Josué Nogueira",
+      "nick": "Josuno",
+      "equipe": "RedBull",
+      "imagem": "uploads/pilotos/30-1776714592248.jpg"
     },
     "31": {
       "id": "31",
@@ -2488,14 +2488,8 @@
       "nick": "ERT",
       "equipe": "Elite Racing Team",
       "imagem": "pilotos/31.jfif"
-    },
-    "pilot_1774541385197874": {
-      "id": "pilot_1774541385197874",
-      "nome": "Josué Nogueira",
-      "nick": "",
-      "equipe": "",
-      "imagem": "uploads/pilotos/pilot_1774541385197874-1774541393290.jpg"
     }
   },
-  "users": []
+  "users": [],
+  "deletedPilotIds": []
 }

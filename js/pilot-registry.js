@@ -74,62 +74,22 @@
     }
   }
 
+  function removePilot(pilotId) {
+    const registry = loadPilotRegistry();
+    if (registry[pilotId]) {
+      delete registry[pilotId];
+      savePilotRegistry(registry);
+    }
+  }
+
   function getAllPilots() {
     return loadPilotRegistry();
   }
 
   function initializeFromPilotosJS() {
-    if (typeof pilotos === "undefined" || !Array.isArray(pilotos)) {
-      return;
-    }
-
-    const registry = loadPilotRegistry();
-    let hasChanges = false;
-
-    pilotos.forEach((pilot) => {
-      const pilotId = String(pilot.id || "").trim();
-      if (!pilotId) {
-        return;
-      }
-
-      const existingPilot = registry[pilotId];
-      if (!existingPilot || typeof existingPilot !== "object") {
-        registry[pilotId] = {
-          id: pilotId,
-          nome: String(pilot.nome || "").trim(),
-          nick: String(pilot.nick || "").trim(),
-          equipe: String(pilot.equipe || "").trim(),
-          imagem: String(pilot.imagem || "").trim()
-        };
-        hasChanges = true;
-        return;
-      }
-
-      const mergedPilot = {
-        id: pilotId,
-        nome: Object.prototype.hasOwnProperty.call(existingPilot, "nome")
-          ? existingPilot.nome
-          : String(pilot.nome || "").trim(),
-        nick: Object.prototype.hasOwnProperty.call(existingPilot, "nick")
-          ? existingPilot.nick
-          : String(pilot.nick || "").trim(),
-        equipe: Object.prototype.hasOwnProperty.call(existingPilot, "equipe")
-          ? existingPilot.equipe
-          : String(pilot.equipe || "").trim(),
-        imagem: Object.prototype.hasOwnProperty.call(existingPilot, "imagem")
-          ? existingPilot.imagem
-          : String(pilot.imagem || "").trim()
-      };
-
-      if (JSON.stringify(existingPilot) !== JSON.stringify(mergedPilot)) {
-        registry[pilotId] = mergedPilot;
-        hasChanges = true;
-      }
-    });
-
-    if (hasChanges) {
-      savePilotRegistry(registry);
-    }
+    // Desabilitado: o runtime-state.json (através do persisteRegistry)
+    // é agora a única fonte de verdade para os pilotos após a inicialização.
+    // Isso evita que pilotos deletados sejam recriados na interface do usuário.
   }
 
   function findPilotIdByName(pilotName) {
@@ -152,6 +112,7 @@
     getById: getPilotById,
     getImage: getPilotImage,
     removeImage: removePilotImage,
+    removePilot: removePilot,
     getAll: getAllPilots,
     findIdByName: findPilotIdByName,
     initFromPilotosJS: initializeFromPilotosJS

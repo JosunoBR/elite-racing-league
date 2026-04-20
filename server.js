@@ -5,7 +5,7 @@ const vm = require("vm");
 const { URL } = require("url");
 
 const HOST = process.env.HOST || "127.0.0.1";
-const PORT = Number(process.env.PORT || 3000);
+const PORT = Number(process.env.PORT || 3001); // Alterado para 3001
 const ROOT_DIR = __dirname;
 const STATIC_INDEX = "index.html";
 const STATE_FILE = path.join(ROOT_DIR, "data", "runtime-state.json");
@@ -229,7 +229,8 @@ function buildSeedState() {
     updatedAt: new Date().toISOString(),
     grids: normalizeGrids(grids),
     pilotRegistry: normalizePilotRegistry(pilotRegistry),
-    users: []
+    users: [],
+    deletedPilotIds: []
   };
 }
 
@@ -239,7 +240,8 @@ function writeState(state) {
     updatedAt: new Date().toISOString(),
     grids: normalizeGrids(state?.grids),
     pilotRegistry: normalizePilotRegistry(state?.pilotRegistry),
-    users: normalizeUsers(state?.users)
+    users: normalizeUsers(state?.users),
+    deletedPilotIds: Array.isArray(state?.deletedPilotIds) ? state.deletedPilotIds : []
   };
 
   fs.mkdirSync(path.dirname(STATE_FILE), { recursive: true });
@@ -249,14 +251,21 @@ function writeState(state) {
 
 function ensureState() {
   if (!fs.existsSync(STATE_FILE)) {
+    console.log("Primeira inicialização: criando estado a partir de seed");
     return writeState(buildSeedState());
   }
 
   try {
     const parsed = JSON.parse(fs.readFileSync(STATE_FILE, "utf8"));
+    const seed = buildSeedState();
+
     const mergedState = {
-      ...buildSeedState(),
-      ...parsed
+      version: 1,
+      updatedAt: parsed.updatedAt || new Date().toISOString(),
+      grids: parsed.grids || seed.grids,
+      pilotRegistry: parsed.pilotRegistry || {},
+      users: parsed.users || seed.users,
+      deletedPilotIds: Array.isArray(parsed.deletedPilotIds) ? parsed.deletedPilotIds : []
     };
 
     const normalizedState = {
@@ -389,6 +398,32 @@ function clearPilotPhoto(pilotId) {
   return "";
 }
 
+function deletePilot(pilotId) {
+  const normalizedPilotId = sanitizePilotId(pilotId);
+  if (!normalizedPilotId) {
+    throw new Error("Piloto invalido para exclusao.");
+  }
+
+  const currentState = readState();
+  const currentPilot = currentState.pilotRegistry[normalizedPilotId];
+  if (!currentPilot) {
+    return;
+  }
+
+  removeManagedPilotUpload(currentPilot.imagem);
+  delete currentState.pilotRegistry[normalizedPilotId];
+
+  // Adicionar piloto à lista de deletados para nunca restaurá-lo do seed
+  if (!Array.isArray(currentState.deletedPilotIds)) {
+    currentState.deletedPilotIds = [];
+  }
+  if (!currentState.deletedPilotIds.includes(normalizedPilotId)) {
+    currentState.deletedPilotIds.push(normalizedPilotId);
+  }
+
+  writeState(currentState);
+}
+
 function getContentType(filePath) {
   const extension = path.extname(filePath).toLowerCase();
   const map = {
@@ -496,6 +531,18 @@ async function handleApi(request, response, url) {
       const parsedBody = rawBody ? JSON.parse(rawBody) : {};
       const imagePath = clearPilotPhoto(parsedBody.pilotId);
       sendJson(response, 200, { ok: true, imagePath });
+    } catch (error) {
+      sendJson(response, 400, { ok: false, error: error.message });
+    }
+    return true;
+  }
+
+  if (request.method === "POST" && url.pathname === "/api/delete/pilot") {
+    try {
+      const rawBody = await readRequestBody(request);
+      const parsedBody = rawBody ? JSON.parse(rawBody) : {};
+      deletePilot(parsedBody.pilotId);
+      sendJson(response, 200, { ok: true });
     } catch (error) {
       sendJson(response, 400, { ok: false, error: error.message });
     }

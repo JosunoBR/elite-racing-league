@@ -14,6 +14,17 @@
     <script src="js/auth.js"></script>
     <script>Auth.requireLogin('login.html?redirect=grid_edit.html');</script>
     <style>
+        /* Direção de texto LTR (Left-to-Right) */
+        html, body, * {
+            direction: ltr;
+            unicode-bidi: embed;
+        }
+        input, textarea, select, button, [contenteditable="true"], .stage-points, .pilot-name, .stage-header, .grid-title {
+            direction: ltr !important;
+            unicode-bidi: embed !important;
+            text-align: left !important;
+        }
+
         body {
             background: linear-gradient(180deg, #111, #000);
             color: #fff;
@@ -130,10 +141,10 @@
             <div class="collapse navbar-collapse" id="menu">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="index.html">Inicial</a></li>
+                    <li class="nav-item"><a class="nav-link" href="regulamento.html">Regulamento</a></li>
                     <li class="nav-item" data-auth-admin><a class="nav-link active" href="grid_edit.html">Lançar Resultados</a></li>
                     <li class="nav-item" data-auth-admin><a class="nav-link" href="pilot_management.html">Gerenciar Pilotos</a></li>
                     <li class="nav-item" data-auth-admin><a class="nav-link" href="admin_users.html">Logins</a></li>
-                    <li class="nav-item"><a class="nav-link" href="regulamento.html">Regulamento</a></li>
                     <li class="nav-item" id="btn-login-nav" style="display:none">
                         <a class="nav-link" href="login.html" style="color:#e10600;font-weight:600"><i class="bi bi-box-arrow-in-right me-1"></i>Entrar</a>
                     </li>
@@ -275,7 +286,7 @@
         function updateButtonText(titleElement, gridId) {
             const normalizedTitle = titleElement.textContent.trim() || getGridFallbackName(gridId);
             const button = getTabButtonByGridId(gridId);
-            titleElement.textContent = normalizedTitle;
+            // Só atualizar o botão, não reescrever o título (evita problemas com cursor)
             if (button) button.textContent = normalizedTitle;
         }
 
@@ -286,7 +297,7 @@
 
             let stageCells = "";
             for (let stageIndex = 0; stageIndex < GRID_STAGE_COUNT; stageIndex++) {
-                stageCells += `<td class="stage-points" contenteditable="true">${escapeGridHtml(etapas[stageIndex] || "")}</td>`;
+                stageCells += `<td class="stage-points" contenteditable="true">${etapas[stageIndex] || ""}</td>`;
             }
 
             let photoHtml = pilotImage
@@ -297,8 +308,8 @@
                 <tr data-row-index="${rowIndex}" data-pilot-id="${row.pilotId || ''}">
                     <td class="row-id-column">${rowIndex + 1}</td>
                     <td class="pilot-photo-cell">${photoHtml}</td>
-                    <td class="pilot-name" contenteditable="true">${escapeGridHtml(pilotName)}</td>
-                    <td class="pilot-team" contenteditable="true">${escapeGridHtml(row.equipe || "")}</td>
+                    <td class="pilot-name" contenteditable="true">${pilotName}</td>
+                    <td class="pilot-team" contenteditable="true">${row.equipe || ""}</td>
                     ${stageCells}
                     <td class="total-points"></td>
                     <td class="actions-column">
@@ -331,14 +342,14 @@
             const headers = Array.isArray(grid.headers) ? grid.headers : createDefaultGridHeaders();
             const rows = Array.isArray(grid.rows) ? grid.rows : [];
             let stageHeaders = "";
-            headers.forEach(header => { stageHeaders += `<th class="stage-header" contenteditable="true">${escapeGridHtml(header)}</th>`; });
+            headers.forEach(header => { stageHeaders += `<th class="stage-header" contenteditable="true">${header}</th>`; });
             let bodyRows = "";
             rows.forEach((row, index) => { bodyRows += renderGridRow(row, index, grid.id); });
             tabContent.id = grid.id;
             tabContent.className = "tabcontent";
             tabContent.innerHTML = `
                 <h2>
-                    <span class="grid-title" contenteditable="true" data-grid-id="${grid.id}">${escapeGridHtml(grid.name || getGridFallbackName(grid.id))}</span>
+                    <span class="grid-title" contenteditable="true" data-grid-id="${grid.id}">${grid.name || getGridFallbackName(grid.id)}</span>
                     <span class="delete-grid" onclick="deleteGrid('${grid.id}')">&#10060;</span>
                 </h2>
                 <table>
@@ -386,12 +397,19 @@
                         etapas
                     };
                 });
-                titleElement.textContent = gridName; button.textContent = gridName;
+                // Não reescrever titleElement aqui - evita problemas com edição contenteditable
+                button.textContent = gridName;
                 return { id: gridId, name: gridName, headers, rows };
             });
         }
 
-        function saveCurrentGrids() { saveEditableGrids(collectGridData()); }
+        function saveCurrentGrids() { 
+          saveEditableGrids(collectGridData()); 
+          // Notificar outras abas e mesma aba sobre atualização
+          window.dispatchEvent(new CustomEvent('gridUpdated', {
+            detail: { timestamp: new Date().toISOString(), source: 'grid_edit' }
+          }));
+        }
 
         function updateTotalPoints() {
             document.querySelectorAll("#grid-container tbody tr").forEach(rowElement => {
@@ -479,13 +497,16 @@
                 if (target.classList.contains("stage-points")) {
                     saveCurrentGrids(); updateTotalPoints(); return;
                 }
-                if (target.classList.contains("grid-title")) { updateButtonText(target, target.dataset.gridId); saveCurrentGrids(); }
+                if (target.classList.contains("grid-title")) { saveCurrentGrids(); }
                 if (target.classList.contains("pilot-team") || target.classList.contains("stage-header")) saveCurrentGrids();
             });
 
             document.getElementById("grid-container").addEventListener("blur", function (e) {
                 const target = e.target;
-                if (target.classList.contains("grid-title")) updateButtonText(target, target.dataset.gridId);
+                if (target.classList.contains("grid-title")) {
+                    // Só sincroniza o botão quando termina a edição (no blur)
+                    updateButtonText(target, target.dataset.gridId);
+                }
                 // Sanitiza pontos ao sair da célula (sem interferir no cursor durante digitação)
                 if (target.classList.contains("stage-points")) {
                     const sanitized = sanitizeGridNumericValue(target.textContent);

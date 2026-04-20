@@ -71,6 +71,47 @@
     return grids.map((grid, index) => normalizeGrid(grid, index));
   }
 
+  // ========== VALIDAÇÃO DE INTEGRIDADE ==========
+  function generateGridChecksum(grids) {
+    const str = JSON.stringify(grids);
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = ((hash << 5) - hash) + str.charCodeAt(i);
+      hash = hash & hash;
+    }
+    return hash.toString(36);
+  }
+
+  function validateGridIntegrity(grids) {
+    if (!Array.isArray(grids)) {
+      console.warn("Grids não é array, usando default");
+      return null;
+    }
+
+    try {
+      for (let i = 0; i < grids.length; i++) {
+        const grid = grids[i];
+        if (!grid.id || !grid.name || !Array.isArray(grid.headers) || !Array.isArray(grid.rows)) {
+          console.warn(`Grid ${i} estrutura inválida, usando default`);
+          return null;
+        }
+        
+        if (grid.rows.length > 0) {
+          const firstRow = grid.rows[0];
+          if (!firstRow.hasOwnProperty('pilotId') || !firstRow.hasOwnProperty('etapas')) {
+            console.warn(`Grid ${i} rows estrutura inválida`);
+            return null;
+          }
+        }
+      }
+
+      return grids;
+    } catch (error) {
+      console.warn("Erro validando grids:", error);
+      return null;
+    }
+  }
+
   function buildDefaultEditableGrids() {
     if (typeof dadosCampeonato === "undefined" || !dadosCampeonato) {
       return [];
@@ -130,7 +171,8 @@
       }
 
       const parsedData = JSON.parse(rawData);
-      const normalizedData = normalizeEditableGrids(parsedData);
+      const validatedData = validateGridIntegrity(parsedData);
+      const normalizedData = normalizeEditableGrids(validatedData || fallbackGrids);
       return normalizedData.length ? normalizedData : fallbackGrids;
     } catch (error) {
       console.warn("Nao foi possivel carregar os grids salvos.", error);

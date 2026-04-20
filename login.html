@@ -17,6 +17,17 @@
     }
   </script>
   <style>
+    /* Direção de texto LTR (Left-to-Right) */
+    html, body, * {
+      direction: ltr;
+      unicode-bidi: embed;
+    }
+    input, textarea, select, button, [contenteditable="true"] {
+      direction: ltr !important;
+      unicode-bidi: embed !important;
+      text-align: left !important;
+    }
+
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
     *, *::before, *::after { box-sizing: border-box; }
     body {

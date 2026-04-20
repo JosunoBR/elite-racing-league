@@ -13,6 +13,18 @@
     <link rel="icon" type="image/png" href="fotosmenu/logo.png" sizes="16x16" />
     <link rel="icon" type="image/png" href="fotosmenu/logo.png" sizes="128x128" />
   <link rel="stylesheet" href="estilos.css">
+  <style>
+    /* Direção de texto LTR (Left-to-Right) */
+    html, body, * {
+      direction: ltr;
+      unicode-bidi: embed;
+    }
+    input, textarea, select, button, [contenteditable="true"] {
+      direction: ltr !important;
+      unicode-bidi: embed !important;
+      text-align: left !important;
+    }
+  </style>
 </head>
 
 <body>
@@ -39,6 +51,10 @@
           <a class="nav-link active" href="index.html">Inicial</a>
         </li>
 
+        <li class="nav-item">
+          <a class="nav-link" href="regulamento.html">Regulamento</a>
+        </li>
+
         <!-- Links visíveis apenas quando logado -->
         <li class="nav-item" data-auth-admin style="display:none">
           <a class="nav-link" href="grid_edit.html">Lançar Resultados</a>
@@ -48,10 +64,6 @@
         </li>
         <li class="nav-item" data-auth-admin style="display:none">
           <a class="nav-link" href="admin_users.html">Logins</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="regulamento.html">Regulamento</a>
         </li>
 
         <!-- Botão Entrar (visível apenas quando deslogado) -->

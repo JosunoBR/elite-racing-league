@@ -8,6 +8,18 @@
   --text-muted: #ccc;
 }
 
+/* DIREÇÃO DE TEXTO - LTR (Left-to-Right) */
+html, body {
+  direction: ltr;
+  unicode-bidi: embed;
+}
+
+input, textarea, select, button, [contenteditable="true"] {
+  direction: ltr;
+  unicode-bidi: embed;
+  text-align: left;
+}
+
 /* NAVBAR */
 .custom-navbar {
   background: linear-gradient(90deg, #0a0a0a, var(--bg-dark));
