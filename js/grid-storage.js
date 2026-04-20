@@ -3,6 +3,19 @@
   const STAGE_COUNT = 10;
   const DEFAULT_ROWS = 20;
 
+  const F1_TEAMS = {
+    redbull: "Red Bull",
+    ferrari: "Ferrari",
+    mercedes: "Mercedes",
+    astonmartin: "Aston Martin",
+    kicksauber: "Kick Sauber",
+    alpine: "Alpine",
+    haas: "Haas",
+    mclaren: "McLaren",
+    rb: "Racing Bulls",
+    williams: "Williams"
+  };
+
   function createDefaultHeaders() {
     return Array.from({ length: STAGE_COUNT }, (_, index) => `Etapa ${index + 1}`);
   }
@@ -219,6 +232,7 @@
   window.GRID_STORAGE_KEY = STORAGE_KEY;
   window.GRID_STAGE_COUNT = STAGE_COUNT;
   window.GRID_DEFAULT_ROWS = DEFAULT_ROWS;
+  window.F1_TEAMS = F1_TEAMS;
   window.createDefaultGridHeaders = createDefaultHeaders;
   window.sanitizeGridNumericValue = sanitizeNumericValue;
   window.normalizeEditableGrids = normalizeEditableGrids;

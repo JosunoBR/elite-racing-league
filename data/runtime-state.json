@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-04-20T20:11:33.345Z",
+  "updatedAt": "2026-04-20T20:44:01.013Z",
   "grids": [
     {
       "id": "grid1",
@@ -76,7 +76,7 @@
           "id": 4,
           "pilotId": "30",
           "nome": "Josué Nogueira",
-          "equipe": "Redbull",
+          "equipe": "redbull",
           "etapas": [
             "35",
             "35",

@@ -1,12 +1,7 @@
-if (typeof pilotRegistry !== "undefined" && pilotRegistry.initFromPilotosJS) {
-  pilotRegistry.initFromPilotosJS();
-}
-
 // ========== LISTENERS PARA REATIVIDADE E MONITORAMENTO ==========
 
 // Listener para reatividade em mesma aba
 window.addEventListener('gridUpdated', function(event) {
-  console.log('[app.js] Detectado atualização de grids', event.detail);
   setTimeout(function() {
     renderizarTabelas();
   }, 100);
@@ -22,17 +17,6 @@ window.addEventListener('persistenceFailure', function(event) {
   document.body.appendChild(notification);
   setTimeout(function() { notification.remove(); }, 5000);
 });
-
-function escapeHtml(str) {
-  return String(str || '').replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>');
-}
-
-function getEditableGrids() {
-  if (typeof loadEditableGrids === "function") {
-    return loadEditableGrids();
-  }
-  return [];
-}
 
 function calculateGridRowTotal(row) {
   if (!row || !Array.isArray(row.etapas)) {
@@ -63,34 +47,24 @@ function getGridRowsWithTotals(grid) {
 // Agrupa pontos por equipe e retorna lista ordenada por total
 function getConstructorStandings(rows) {
   const map = {};
-  rows.forEach(function(row) {
-    const team = String(row.equipe || "").trim();
-    if (!team) return;
-    if (!map[team]) map[team] = 0;
-    map[team] += row.total;
+  rows.forEach(function (row) {
+    const originalTeamName = String(row.equipe || "").trim();
+    if (!originalTeamName) return;
+    const normalizedKey = originalTeamName.toLowerCase();
+    if (!map[normalizedKey]) {
+      map[normalizedKey] = { total: 0, originalName: originalTeamName };
+    }
+    map[normalizedKey].total += row.total;
   });
-  return Object.entries(map)
-    .map(function([team, pts]) { return { equipe: team, total: pts }; })
-    .sort(function(a, b) { return b.total - a.total || a.equipe.localeCompare(b.equipe); });
+  return Object.values(map)
+    .map(function (data) { return { equipe: data.originalName, total: data.total }; })
+    .sort(function (a, b) { return b.total - a.total || a.equipe.localeCompare(b.equipe); });
 }
 
 function formatTeamName(team) {
   const normalizedTeam = String(team || "").trim().toLowerCase();
-  const teamNames = {
-    redbull: "Red Bull",
-    ferrari: "Ferrari",
-    mercedes: "Mercedes",
-    astonmartin: "Aston Martin",
-    kicksauber: "Kick Sauber",
-    alpine: "Alpine",
-    haas: "Haas",
-    mclaren: "McLaren",
-    rb: "RB",
-    williams: "Williams"
-  };
-
-  if (teamNames[normalizedTeam]) {
-    return teamNames[normalizedTeam];
+  if (typeof F1_TEAMS !== 'undefined' && F1_TEAMS[normalizedTeam]) {
+    return F1_TEAMS[normalizedTeam];
   }
   return String(team || "").trim();
 }
@@ -113,7 +87,7 @@ function renderizarTabelas() {
     return;
   }
 
-  const grids = getEditableGrids();
+  const grids = loadEditableGrids();
   tabsContainer.innerHTML = "";
   gridsContainer.innerHTML = "";
 
@@ -135,81 +109,56 @@ function renderizarTabelas() {
 
     // 1. Montar HTML do Carrossel do Grid
     const topPilotos = rows.slice(0, 10);
-    let swiperHtml = "";
-    if (topPilotos.length > 0) {
-      const slides = topPilotos.map((piloto, i) => {
-        const leaderClass = i === 0 ? "leader-card" : "";
-        const pilotImage = (piloto.pilotId && pilotRegistry.getImage(piloto.pilotId)) || "fotosmenu/logo.png";
-        return `<div class="swiper-slide"><div class="card-piloto ${leaderClass}"><img src="${pilotImage}" onerror="this.src='fotosmenu/logo.png'" class="img-click"><div class="card-body"><div class="nome">${escapeHtml(piloto.nome)}</div><div class="equipe">${escapeHtml(formatTeamName(piloto.equipe) || "Sem equipe")}</div><div class="points">${formatPoints(piloto.total)} PTS</div></div></div></div>`;
-        const fullPilot = piloto.pilotId ? pilotRegistry.getById(piloto.pilotId) : null;
-        const pilotNick = fullPilot ? fullPilot.nick : '';
-        return `<div class="swiper-slide"><div class="card-piloto ${leaderClass}"><img src="${pilotImage}" onerror="this.src='fotosmenu/logo.png'" class="img-click"><div class="card-body"><div class="nome">${escapeHtml(piloto.nome)}</div><div class="equipe">${escapeHtml(pilotNick)}</div><div class="d-flex justify-content-between align-items-center"><span>${escapeHtml(formatTeamName(piloto.equipe) || "Sem equipe")}</span><span class="points">${formatPoints(piloto.total)} PTS</span></div></div></div></div>`;
-      }).join("");
-      swiperHtml = `
+    const swiperHtml = topPilotos.length > 0
+      ? `
         <div class="swiper">
           <div class="swiper-wrapper">
-            ${slides}
+            ${topPilotos.map((piloto, i) => {
+              const leaderClass = i === 0 ? "leader-card" : "";
+              const pilotImage = (piloto.pilotId && pilotRegistry.getImage(piloto.pilotId)) || "fotosmenu/logo.png";
+              const fullPilot = piloto.pilotId ? pilotRegistry.getById(piloto.pilotId) : null;
+              const pilotNick = fullPilot ? (fullPilot.nick || "Sem Nick") : "Sem Nick";
+              return `<div class="swiper-slide"><div class="card-piloto ${leaderClass}"><img src="${pilotImage}" onerror="this.src='fotosmenu/logo.png'" class="img-click"><div class="card-body"><div class="nome">${escapeGridHtml(piloto.nome)}</div><div class="equipe">${escapeGridHtml(pilotNick)}</div><div class="d-flex justify-content-between align-items-center"><span>${escapeGridHtml(formatTeamName(piloto.equipe) || "")}</span><span class="points">${formatPoints(piloto.total)} PTS</span></div></div></div></div>`;
+            }).join("")}
           </div>
           <div class="swiper-button-next"></div>
           <div class="swiper-button-prev"></div>
           <div class="swiper-pagination"></div>
         </div>
-      `;
-    } else {
-      swiperHtml = `<div class="text-center p-5 w-100">Nenhum piloto para exibir neste grid.</div>`;
-    }
+      `
+      : `<div class="text-center p-5 w-100">Nenhum piloto para exibir neste grid.</div>`;
 
     // 2. Montar HTML da Tabela do Grid
-    let rowsHtml = "";
-    if (rows.length) {
-      rowsHtml = rows.map((row) => {
+    const rowsHtml = rows.length
+      ? rows.map((row) => {
         const pilotImage = (row.pilotId && pilotRegistry.getImage(row.pilotId)) || "fotosmenu/logo.png";
         const teamClass = String(row.equipe || "").trim().toLowerCase().replace(/\s/g, '');
 
-        return `
-          <tr>
-            <td>
-              <div class="piloto-info">
-                <img src="${pilotImage}" class="foto-piloto" onerror="this.src='fotosmenu/logo.png'">
-                <span>${escapeHtml(row.nome)}</span>
-              </div>
-            </td>
-            <td><span class="${teamClass}">${escapeHtml(formatTeamName(row.equipe) || "-")}</span></td>
-            <td class="numero">${formatPoints(row.total)}</td>
-          </tr>`;
-      }).join("");
-    } else {
-      rowsHtml = "<tr><td colspan=\"3\" class=\"text-center\">Nenhum piloto cadastrado.</td></tr>";
-    }
+        return `<tr><td><div class="piloto-info"><img src="${pilotImage}" class="foto-piloto" onerror="this.src='fotosmenu/logo.png'"><span>${escapeGridHtml(row.nome)}</span></div></td><td><span class="${teamClass}">${escapeGridHtml(formatTeamName(row.equipe) || "")}</span></td><td class="numero">${formatPoints(row.total)}</td></tr>`;
+      }).join("")
+      : `<tr><td colspan="3" class="text-center">Nenhum piloto cadastrado.</td></tr>`;
 
     // 3. Montar HTML da Tabela de Construtores
     const constructors = getConstructorStandings(rows);
-    let constructorRowsHtml = "";
-    if (constructors.length) {
-      constructorRowsHtml = constructors.map(function(c, i) {
+    const constructorRowsHtml = constructors.length
+      ? constructors.map(function(c, i) {
         const teamClass = String(c.equipe || "").trim().toLowerCase().replace(/\s/g, '');
-        return `<tr>
-            <td class="numero">${i + 1}</td>
-            <td><span class="${teamClass}">${escapeHtml(formatTeamName(c.equipe))}</span></td>
-            <td class="numero">${formatPoints(c.total)}</td>
-          </tr>`;
-      }).join("");
-    } else {
-      constructorRowsHtml = "<tr><td colspan=\"3\" class=\"text-center\">Nenhuma equipe cadastrada.</td></tr>";
-    }
+        return `<tr><td class="numero">${i + 1}</td><td><span class="${teamClass}">${escapeGridHtml(formatTeamName(c.equipe))}</span></td><td class="numero">${formatPoints(c.total)}</td></tr>`;
+      }).join("")
+      : `<tr><td colspan="3" class="text-center">Nenhuma equipe cadastrada.</td></tr>`;
 
     // 4. Juntar Tudo e Inserir no HTML
     gridDiv.innerHTML = `
       <!-- CARROSSEL -->
       <div class="container mt-5">
-        <h1 class="title">🏁 Destaques de ${escapeHtml(grid.name || "Grid " + (index + 1))}</h1>
+        <h1 class="title">🏁 Destaques de ${escapeGridHtml(grid.name || "Grid " + (index + 1))}</h1>
         ${swiperHtml}
       </div>
 
       <!-- TABELA DE CLASSIFICAÇÃO -->
       <div class="classificacao-container">
         <div class="tabela">
-          <h3>${escapeHtml(grid.name || "Grid " + (index + 1))}</h3>
+          <h3>${escapeGridHtml(grid.name || "Grid " + (index + 1))}</h3>
           <table><thead><tr><th>Piloto</th><th>Equipe</th><th>Pontos</th></tr></thead><tbody>${rowsHtml}</tbody></table>
         </div>
         <div class="tabela tabela-construtores">
@@ -298,4 +247,3 @@ window.addEventListener("storage", function (event) {
   }
   renderizarTabelas();
 });
-

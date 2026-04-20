@@ -308,8 +308,13 @@
                 <tr data-row-index="${rowIndex}" data-pilot-id="${row.pilotId || ''}">
                     <td class="row-id-column">${rowIndex + 1}</td>
                     <td class="pilot-photo-cell">${photoHtml}</td>
-                    <td class="pilot-name" contenteditable="true">${pilotName}</td>
-                    <td class="pilot-team" contenteditable="true">${row.equipe || ""}</td>
+                    <td class="pilot-name" contenteditable="true">${escapeGridHtml(pilotName)}</td>
+                    <td class="pilot-team-cell">
+                        <select class="form-select form-select-sm pilot-team-select" style="background:#151515; color:white; border:none; width: 100%; padding: 4px 8px;">
+                            <option value=""></option>
+                            ${Object.keys(window.F1_TEAMS || {}).map(key => `<option value="${key}" ${String(row.equipe || "").toLowerCase() === key ? 'selected' : ''}>${window.F1_TEAMS[key]}</option>`).join('')}
+                        </select>
+                    </td>
                     ${stageCells}
                     <td class="total-points"></td>
                     <td class="actions-column">
@@ -393,7 +398,7 @@
                     return {
                         pilotId: rowElement.dataset.pilotId || '',
                         nome: rowElement.querySelector(".pilot-name").textContent.trim(),
-                        equipe: rowElement.querySelector(".pilot-team").textContent.trim(),
+                        equipe: rowElement.querySelector(".pilot-team-select").value,
                         etapas
                     };
                 });
@@ -470,7 +475,6 @@
         }
 
         document.addEventListener("DOMContentLoaded", function () {
-            pilotRegistry.initFromPilotosJS();
             renderEditableGrids();
 
             document.getElementById("grid-container").addEventListener("input", function (e) {
@@ -498,7 +502,11 @@
                     saveCurrentGrids(); updateTotalPoints(); return;
                 }
                 if (target.classList.contains("grid-title")) { saveCurrentGrids(); }
-                if (target.classList.contains("pilot-team") || target.classList.contains("stage-header")) saveCurrentGrids();
+                if (target.classList.contains("stage-header")) saveCurrentGrids();
+            });
+
+            document.getElementById("grid-container").addEventListener("change", function(e) {
+                if (e.target.classList.contains('pilot-team-select')) saveCurrentGrids();
             });
 
             document.getElementById("grid-container").addEventListener("blur", function (e) {
@@ -518,4 +526,3 @@
     </script>
 </body>
 </html>
-

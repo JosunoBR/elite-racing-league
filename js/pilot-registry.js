@@ -86,12 +86,6 @@
     return loadPilotRegistry();
   }
 
-  function initializeFromPilotosJS() {
-    // Desabilitado: o runtime-state.json (através do persisteRegistry)
-    // é agora a única fonte de verdade para os pilotos após a inicialização.
-    // Isso evita que pilotos deletados sejam recriados na interface do usuário.
-  }
-
   function findPilotIdByName(pilotName) {
     if (!pilotName) return null;
     const normalizedName = String(pilotName).trim().toLowerCase();
@@ -114,7 +108,6 @@
     removeImage: removePilotImage,
     removePilot: removePilot,
     getAll: getAllPilots,
-    findIdByName: findPilotIdByName,
-    initFromPilotosJS: initializeFromPilotosJS
+    findIdByName: findPilotIdByName
   };
 })();

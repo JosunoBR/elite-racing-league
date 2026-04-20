@@ -251,7 +251,7 @@ function writeState(state) {
 
 function ensureState() {
   if (!fs.existsSync(STATE_FILE)) {
-    console.log("Primeira inicialização: criando estado a partir de seed");
+    console.log("[ensureState] Arquivo de estado não encontrado. Criando a partir do seed.");
     return writeState(buildSeedState());
   }
 
@@ -259,13 +259,27 @@ function ensureState() {
     const parsed = JSON.parse(fs.readFileSync(STATE_FILE, "utf8"));
     const seed = buildSeedState();
 
+    // Lógica de merge que preserva edições do admin e adiciona novos pilotos do seed.
+    const mergedPilotRegistry = { ...seed.pilotRegistry };
+    Object.keys(parsed.pilotRegistry || {}).forEach(pilotId => {
+      mergedPilotRegistry[pilotId] = parsed.pilotRegistry[pilotId];
+    });
+
+    // Remove pilotos que foram explicitamente deletados para não serem recriados.
+    const deletedIds = new Set(parsed.deletedPilotIds || []);
+    deletedIds.forEach(pilotId => {
+      if (mergedPilotRegistry[pilotId]) {
+        delete mergedPilotRegistry[pilotId];
+      }
+    });
+
     const mergedState = {
       version: 1,
       updatedAt: parsed.updatedAt || new Date().toISOString(),
       grids: parsed.grids || seed.grids,
-      pilotRegistry: parsed.pilotRegistry || {},
+      pilotRegistry: mergedPilotRegistry,
       users: parsed.users || seed.users,
-      deletedPilotIds: Array.isArray(parsed.deletedPilotIds) ? parsed.deletedPilotIds : []
+      deletedPilotIds: Array.from(deletedIds)
     };
 
     const normalizedState = {
@@ -273,7 +287,8 @@ function ensureState() {
       updatedAt: parsed.updatedAt || new Date().toISOString(),
       grids: normalizeGrids(mergedState.grids),
       pilotRegistry: normalizePilotRegistry(mergedState.pilotRegistry),
-      users: normalizeUsers(mergedState.users)
+      users: normalizeUsers(mergedState.users),
+      deletedPilotIds: mergedState.deletedPilotIds
     };
 
     if (JSON.stringify(parsed) !== JSON.stringify(normalizedState)) {
@@ -282,7 +297,7 @@ function ensureState() {
 
     return normalizedState;
   } catch (error) {
-    console.warn("Nao foi possivel ler o arquivo de estado. Recriando a partir dos arquivos base.", error);
+    console.warn("[ensureState] Nao foi possivel ler o arquivo de estado. Recriando a partir dos arquivos base.", error);
     return writeState(buildSeedState());
   }
 }
